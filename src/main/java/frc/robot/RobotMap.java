@@ -16,4 +16,11 @@ public class RobotMap {
     // TODO: Figure out the actual max number of rotations for the elevator motor.
     public static final double ELEVATOR_MOTOR_MAX_ROTATIONS = 5.0;
   }
+
+  public static final class LauncherConstants {
+    // TODO: Figure out the actual motor can ID for launcher.
+    public static final int LAUNCHER_MOTOR_CAN_ID = 17;
+    // TODO: Figure out the actual Launch speed we want it to launch at.
+    public static final double LAUNCHER_SPEED = 20;
+  }
 }

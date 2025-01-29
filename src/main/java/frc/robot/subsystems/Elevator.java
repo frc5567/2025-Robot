@@ -14,7 +14,7 @@ public class Elevator implements Subsystem {
   private PositionVoltage m_positionVoltage = new PositionVoltage(0).withSlot(0);
 
   // Defines the variable "elevatorMotor" as a TalonFX motor.
-  private TalonFX elevatorMotor;
+  private TalonFX m_elevatorMotor;
 
   /**
    * Main constructor for the elevator class.
@@ -23,7 +23,7 @@ public class Elevator implements Subsystem {
    */
   public Elevator(int motorPort) {
     // TODO: Find device id for elevator TalonFX.
-    elevatorMotor = new TalonFX(RobotMap.ElevatorConstants.ELEVATOR_MOTOR_CAN_ID);
+    m_elevatorMotor = new TalonFX(RobotMap.ElevatorConstants.ELEVATOR_MOTOR_CAN_ID);
   }
 
   /**
@@ -34,7 +34,7 @@ public class Elevator implements Subsystem {
   public double getElevatorPosition() {
 
     // Gets current motor position in terms of rotations.
-    StatusSignal<Angle> rotations = elevatorMotor.getPosition();
+    StatusSignal<Angle> rotations = m_elevatorMotor.getPosition();
     return rotations.getValueAsDouble();
   }
 
@@ -47,7 +47,7 @@ public class Elevator implements Subsystem {
 
     // Convert desired position to distance in mm.
     double targetDistance = position * RobotMap.ElevatorConstants.ROTATIONS_TO_DISTANCE;
-    elevatorMotor.setControl(m_positionVoltage);
+    m_elevatorMotor.setControl(m_positionVoltage);
     double curPos = getElevatorPosition();
     System.out.println(
         "Attempting to move to position (" + position + ") Currently at (" + curPos + ")");
