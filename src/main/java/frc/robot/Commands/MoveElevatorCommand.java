@@ -7,10 +7,10 @@ import frc.robot.subsystems.Elevator;
 public class MoveElevatorCommand extends Command {
 
   // Private representation of the Elevator class within this class.
-  private final Elevator elevatorSubsystem;
+  private final Elevator m_elevatorSubsystem;
 
   // Target position in terms of mm.
-  private final double targetPosition;
+  private final double m_targetPosition;
 
   /**
    * Constructor which constructs an object representing the Elevator and the target position.
@@ -20,8 +20,8 @@ public class MoveElevatorCommand extends Command {
    * @param targetPosition The target position needed to construct the target position object.
    */
   public MoveElevatorCommand(Elevator elevatorSubsytem, double targetPosition) {
-    this.elevatorSubsystem = elevatorSubsytem;
-    this.targetPosition = targetPosition;
+    m_elevatorSubsystem = elevatorSubsytem;
+    m_targetPosition = targetPosition;
     addRequirements(elevatorSubsytem);
   }
 
@@ -36,7 +36,7 @@ public class MoveElevatorCommand extends Command {
    */
   @Override
   public void execute() {
-    elevatorSubsystem.setElevatorPosition(targetPosition);
+    m_elevatorSubsystem.setElevatorPosition(m_targetPosition);
   }
 
   /**
@@ -45,14 +45,15 @@ public class MoveElevatorCommand extends Command {
    * @return A boolean which is true if the current position is within 10 mm of the desired
    *     position.
    */
+  @Override
   public boolean isFinished() {
 
     // Calls the getElevatorPostition method from the elevator class to use to figure out whether we
     // have reached the target position.
-    double currentPosition = elevatorSubsystem.getElevatorPosition();
+    double currentPosition = m_elevatorSubsystem.getElevatorPosition();
     // Returns true if the absolute value of the current position minus the target position is less
     // than the elevator margin of error.
-    return Math.abs(currentPosition - targetPosition)
+    return Math.abs(currentPosition - m_targetPosition)
         < RobotMap.ElevatorConstants.ELEVATOR_MARGIN_OF_ERROR;
   }
 }
