@@ -22,32 +22,33 @@ public class Elevator implements Subsystem {
    * @param motorPort the port of the motor controlling the elevator
    */
   public Elevator(int motorPort) {
-    // TODO: Find device id for elevator TalonFX.
-    m_elevatorMotor = new TalonFX(RobotMap.ElevatorConstants.ELEVATOR_MOTOR_CAN_ID);
+    m_elevatorMotor = new TalonFX(motorPort);
   }
 
   /**
-   * Method that get the motor position in terms of rotations.
+   * Method that get the motor position in terms of distance.
    *
-   * @return the position of the motor rotations with the type double.
+   * @return the position of the elevator in mm.
    */
   public double getElevatorPosition() {
 
     // Gets current motor position in terms of rotations.
     StatusSignal<Angle> rotations = m_elevatorMotor.getPosition();
-    return rotations.getValueAsDouble();
+    double returnValue =
+        rotations.getValue().magnitude() * RobotMap.ElevatorConstants.ROTATIONS_TO_DISTANCE;
+    return returnValue;
   }
 
   /**
    * Set the elevator position in terms of mm.
    *
-   * @param position take current position
+   * @param position position in mm we want to go to.
    */
   public void setElevatorPosition(double position) {
 
     // Convert desired position to distance in mm.
-    double targetDistance = position * RobotMap.ElevatorConstants.ROTATIONS_TO_DISTANCE;
-    m_elevatorMotor.setControl(m_positionVoltage);
+    double targetRotations = position / RobotMap.ElevatorConstants.ROTATIONS_TO_DISTANCE;
+    m_elevatorMotor.setControl(m_positionVoltage.withPosition(targetRotations));
     double curPos = getElevatorPosition();
     System.out.println(
         "Attempting to move to position (" + position + ") Currently at (" + curPos + ")");
