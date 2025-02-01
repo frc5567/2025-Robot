@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
  * @see frc.robot.subsystems.LaunchAngle Mechanism to control the angle of the launcher.
  * @return the instance of the launch angle
  */
-public class LaunchAngle implements Subsystem{
+public class LaunchAngle implements Subsystem {
 
   // Creates a member variable that represents the voltage needed to get to a position, and uses PID
   // to not overshoot target voltage. Start at position 0 (bottom).
@@ -45,5 +45,10 @@ public class LaunchAngle implements Subsystem{
    */
   public void setPosition(double position) {
     m_angleMotor.setControl(m_positionVoltage.withPosition(position));
+  }
+
+  /** Stops the angle motor of the launcher. */
+  public void stopLauncher() {
+    m_angleMotor.set(0);
   }
 }
