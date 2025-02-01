@@ -5,6 +5,11 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
+/**
+ * @see frc.robot.subsystems.Launcher
+ *     <p>Class that sets launcher speed.
+ * @return the instance of the launcher.
+ */
 public class Launcher implements Subsystem {
 
   private TalonFX m_launcherMotor;
