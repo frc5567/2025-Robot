@@ -4,7 +4,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.Elevator;
 
-/** Command that moves the elavator up and down to desired positions. */
+/**
+ * @see frc.robot.Commands.MoveElevatorCommand Command that moves elevator up and down to desired
+ *     posiotions.
+ * @return the instance of the elevator command.
+ */
 public class MoveElevatorCommand extends Command {
 
   // Private representation of the Elevator class within this class.

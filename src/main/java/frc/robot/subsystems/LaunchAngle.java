@@ -5,7 +5,10 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.units.measure.Angle;
 
-/** Mechanism to control the angle of the launcher. */
+/**
+ * @see frc.robot.subsystems.LaunchAngle Mechanism to control the angle of the launcher.
+ * @return the instance of the launch angle
+ */
 public class LaunchAngle {
 
   // Creates a member variable that represents the voltage needed to get to a position, and uses PID
