@@ -5,7 +5,7 @@ import frc.robot.RobotMap.LauncherConstants;
 import frc.robot.subsystems.Launcher;
 
 /**
- * @see frc.robot.Commands.LaunchCoralCommand Command that launches the choral and stops when there
+ * @see frc.robot.Commands.LaunchCoralCommand Command that launches the coral and stops when there
  *     is nothing captured.
  * @return an instance of the coral command.
  */

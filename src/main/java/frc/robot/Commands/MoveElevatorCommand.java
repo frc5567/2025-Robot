@@ -6,7 +6,7 @@ import frc.robot.subsystems.Elevator;
 
 /**
  * @see frc.robot.Commands.MoveElevatorCommand Command that moves elevator up and down to desired
- *     posiotions.
+ *     positions.
  * @return the instance of the elevator command.
  */
 public class MoveElevatorCommand extends Command {

@@ -4,6 +4,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.LaunchAngle;
 
+/**
+ * @see frc.robot.Commands.SetLaunchAngleCommand Sets the angle of the Launcher to desired position.
+ * @return an instance of the launchAngle command.
+ */
 public class SetLaunchAngleCommand extends Command {
 
   private final LaunchAngle m_launchAngle;
