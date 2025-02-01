@@ -57,4 +57,12 @@ public class Elevator implements Subsystem {
     System.out.println(
         "Attempting to move to position (" + position + ") Currently at (" + curPos + ")");
   }
+
+  /**
+   * @see frc.robot.subsystems Sets the speed to 0.
+   * @return returns nothing
+   */
+  public void stopElevator() {
+    m_elevatorMotor.set(0);
+  }
 }
