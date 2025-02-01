@@ -23,4 +23,9 @@ public class RobotMap {
     // TODO: Figure out the actual Launch speed we want it to launch at.
     public static final double LAUNCHER_SPEED = 20;
   }
+
+  public static final class AngleMotorConstants {
+    // TODO: find correct value of tolerance in degrees.
+    public static final double ANGLE_TOLERANCE = 3.0;
+  }
 }

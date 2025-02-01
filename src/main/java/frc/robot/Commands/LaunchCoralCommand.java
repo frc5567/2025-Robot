@@ -5,7 +5,7 @@ import frc.robot.RobotMap.LauncherConstants;
 import frc.robot.subsystems.Launcher;
 
 /**
- * @see frc.robot.Commands.LaunchCoralCommand Command that launches the choral and stops when there
+ * @see frc.robot.Commands.LaunchCoralCommand Command that launches the coral and stops when there
  *     is nothing captured.
  * @return an instance of the coral command.
  */
@@ -15,28 +15,48 @@ public class LaunchCoralCommand extends Command {
 
   private final Launcher m_launcherSubsystem;
 
-  // make constructor method
+  /**
+   * Constructor of the LaunchCoralCommand class
+   *
+   * @param launcherSubsystem
+   */
   public LaunchCoralCommand(Launcher launcherSubsystem) {
     m_launcherSubsystem = launcherSubsystem;
   }
 
+  /**
+   * @see frc.robot.Commands.LaunchCoralCommand Code that happens before it is executed.
+   * @return returns nothing
+   */
   @Override
   public void initialize() {
     // You could add logic to smooth the movement if necessary.
   }
 
-  /** Spin the launcher motor to launch the coral. */
+  /**
+   * @see frc.robot.Commands.LaunchCoralCommand Spin the launcher motor to launch the coral.
+   * @return returns nothing
+   */
   @Override
   public void execute() {
     m_launcherSubsystem.setLauncherSpeed(LauncherConstants.LAUNCHER_SPEED);
   }
 
-  // create a method to know if we're finished launching
+  /**
+   * @see frc.robot.Commands.LaunchCoralCommand Command is finished if there is no coral in
+   *     launcher.
+   * @return returns true if the coral is not sensed.
+   */
   @Override
   public boolean isFinished() {
     return !m_launcherSubsystem.readSensor();
   }
 
+  /**
+   * @see frc.robot.Commands.LaunchCoralCommand Ends the command when recieves that coral is not
+   *     sensed.
+   * @return returns nothing
+   */
   @Override
   public void end(boolean interrupted) {
     m_launcherSubsystem.stopLauncher();

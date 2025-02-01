@@ -6,7 +6,7 @@ import frc.robot.subsystems.Elevator;
 
 /**
  * @see frc.robot.Commands.MoveElevatorCommand Command that moves elevator up and down to desired
- *     posiotions.
+ *     positions.
  * @return the instance of the elevator command.
  */
 public class MoveElevatorCommand extends Command {
@@ -30,14 +30,18 @@ public class MoveElevatorCommand extends Command {
     addRequirements(elevatorSubsytem);
   }
 
+  /**
+   * @see frc.robot.Commands.MoveElevatorCommand Code that happens before it is executed.
+   * @return returns nothing
+   */
   @Override
   public void initialize() {
     // You could add logic to smooth the movement if necessary.
   }
 
   /**
-   * Calls the method to set the elevator position from the elevator class using the target
-   * postition.
+   * @see frc.robot.Commands.MoveElevatorCommand Calls the method to set the elevator position from
+   *     the elevator class using the target postition.
    */
   @Override
   public void execute() {
@@ -45,8 +49,8 @@ public class MoveElevatorCommand extends Command {
   }
 
   /**
-   * Method which compares the current position of the elevator to the desired position.
-   *
+   * @see frc.robot.Commands.MoveElevatorCommand Method which compares the current position of the
+   *     elevator to the desired position.
    * @return A boolean which is true if the current position is within 10 mm of the desired
    *     position.
    */
@@ -60,5 +64,14 @@ public class MoveElevatorCommand extends Command {
     // than the elevator margin of error.
     return Math.abs(currentPosition - m_targetPosition)
         < RobotMap.ElevatorConstants.ELEVATOR_MARGIN_OF_ERROR;
+  }
+
+  /**
+   * @see frc.robot.Commands.MoveElevatorCommand Ends the command when target position is reached.
+   * @return returns nothing
+   */
+  @Override
+  public void end(boolean interrupted) {
+    m_elevatorSubsystem.stopElevator();
   }
 }

@@ -14,28 +14,47 @@ public class IntakeCoralCommand extends Command {
   // create a representation of the launcher
   private final Launcher m_launcherSubsystem;
 
-  // make constructor method
+  /**
+   * Constructor of the intakeCoralCommand class.
+   *
+   * @param launcherSubsystem
+   */
   public IntakeCoralCommand(Launcher launcherSubsystem) {
     m_launcherSubsystem = launcherSubsystem;
   }
 
+  /**
+   * @see frc.robot.Commands.IntakeCoralCommand Code that happens before it is executed.
+   * @return returns nothing
+   */
   @Override
   public void initialize() {
     // You could add logic to smooth the movement if necessary.
   }
 
-  /** Spin the launcher motor in reverse to intake the coral. */
+  /**
+   * @see frc.robot.Commands.IntakeCoralCommand Spin the launcher motor in reverse to intake the
+   *     coral.
+   * @return returns nothing
+   */
   @Override
   public void execute() {
     m_launcherSubsystem.setLauncherSpeed(-LauncherConstants.LAUNCHER_SPEED);
   }
 
-  // create a method to know if we're finished intaking
+  /**
+   * @see frc.robot.Commands.IntakeCoralCommand Command is finished if coral is sensed.
+   * @return true if coral is loaded.
+   */
   @Override
   public boolean isFinished() {
     return m_launcherSubsystem.readSensor();
   }
 
+  /**
+   * @see frc.robot.Commands.IntakeCoralCommand Stops the command.
+   * @return returns nothing
+   */
   @Override
   public void end(boolean interrupted) {
     m_launcherSubsystem.stopLauncher();
