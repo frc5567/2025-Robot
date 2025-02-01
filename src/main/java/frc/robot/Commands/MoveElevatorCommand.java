@@ -4,10 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.Elevator;
 
-
-/**
- * Command that moves the elavator up and down to desired positions.
- */
+/** Command that moves the elavator up and down to desired positions. */
 public class MoveElevatorCommand extends Command {
 
   // Private representation of the Elevator class within this class.
@@ -35,8 +32,8 @@ public class MoveElevatorCommand extends Command {
   }
 
   /**
-   * Calls the method to set the elevator position from the elevator class using the
-   * target postition.
+   * Calls the method to set the elevator position from the elevator class using the target
+   * postition.
    */
   @Override
   public void execute() {
@@ -49,7 +46,6 @@ public class MoveElevatorCommand extends Command {
    * @return A boolean which is true if the current position is within 10 mm of the desired
    *     position.
    */
-
   @Override
   public boolean isFinished() {
 

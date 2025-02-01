@@ -36,8 +36,8 @@ public class Elevator implements Subsystem {
 
     // Gets current motor position in terms of rotations.
     StatusSignal<Angle> rotations = m_elevatorMotor.getPosition();
-    double returnValue = 
-          rotations.getValue().magnitude() * RobotMap.ElevatorConstants.ROTATIONS_TO_DISTANCE;
+    double returnValue =
+        rotations.getValue().magnitude() * RobotMap.ElevatorConstants.ROTATIONS_TO_DISTANCE;
     return returnValue;
   }
 
