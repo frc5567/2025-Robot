@@ -7,6 +7,7 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.RobotMap;
 
+/** Class that sets the position of the elevator */
 public class Elevator implements Subsystem {
 
   // Creates a member variable that represents the voltage needed to get to a position, and uses PID
@@ -22,6 +23,7 @@ public class Elevator implements Subsystem {
    * @param motorPort the port of the motor controlling the elevator
    */
   public Elevator(int motorPort) {
+    // TODO: Find device id for elevator TalonFX.
     m_elevatorMotor = new TalonFX(motorPort);
   }
 
@@ -34,8 +36,8 @@ public class Elevator implements Subsystem {
 
     // Gets current motor position in terms of rotations.
     StatusSignal<Angle> rotations = m_elevatorMotor.getPosition();
-    double returnValue =
-        rotations.getValue().magnitude() * RobotMap.ElevatorConstants.ROTATIONS_TO_DISTANCE;
+    double returnValue = 
+          rotations.getValue().magnitude() * RobotMap.ElevatorConstants.ROTATIONS_TO_DISTANCE;
     return returnValue;
   }
 

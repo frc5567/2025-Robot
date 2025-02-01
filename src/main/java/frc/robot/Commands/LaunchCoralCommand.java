@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotMap.LauncherConstants;
 import frc.robot.subsystems.Launcher;
 
+/** Command that launches the choral and stops when there is nothing captured. */
 public class LaunchCoralCommand extends Command {
 
   // create a representation of the launcher
