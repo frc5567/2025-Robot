@@ -59,7 +59,8 @@ public class Elevator implements Subsystem {
   }
 
   /**
-   * @see frc.robot.subsystems Sets the speed to 0.
+   * @see frc.robot.subsystems.Elevator
+   *     <p>Sets the speed to 0.
    * @return returns nothing
    */
   public void stopElevator() {

@@ -28,4 +28,11 @@ public class RobotMap {
     // TODO: find correct value of tolerance in degrees.
     public static final double ANGLE_TOLERANCE = 3.0;
   }
+
+  public static final class ClimberConstants {
+    // TODO: find correct number of rotations.
+    public static final double ROTATIONS = 5.0;
+    // TODO: find correct margin of error (in mm).
+    public static final double CLIMBER_MARGIN_OF_ERROR = 2.0;
+  }
 }
