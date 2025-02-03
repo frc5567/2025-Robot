@@ -8,7 +8,7 @@ public class RobotMap {
     public static final int ELEVATOR_MOTOR_CAN_ID = 16;
 
     // TODO: Figure out the actual distance traveled (in mm) per one rotation of the elevator motor.
-    public static final double ROTATIONS_TO_DISTANCE = 150.0;
+    public static final double MM_PER_ROTATION = 150.0;
 
     // TODO: Figure out the actual margin of error we want (in mm).
     public static final double ELEVATOR_MARGIN_OF_ERROR = 10.0;
@@ -27,5 +27,12 @@ public class RobotMap {
   public static final class AngleMotorConstants {
     // TODO: find correct value of tolerance in degrees.
     public static final double ANGLE_TOLERANCE = 3.0;
+  }
+
+  public static final class ClimberConstants {
+    // TODO: find correct number of rotations.
+    public static final double MM_PER_ROTATION = 5.0;
+    // TODO: find correct margin of error (in mm).
+    public static final double CLIMBER_MARGIN_OF_ERROR = 2.0;
   }
 }
