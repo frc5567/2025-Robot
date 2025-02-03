@@ -39,7 +39,7 @@ public class Elevator implements Subsystem {
     // Gets current motor position in terms of rotations.
     StatusSignal<Angle> rotations = m_elevatorMotor.getPosition();
     double returnValue =
-        rotations.getValue().magnitude() * RobotMap.ElevatorConstants.ROTATIONS_TO_DISTANCE;
+        rotations.getValue().magnitude() * RobotMap.ElevatorConstants.MM_PER_ROTATION;
     return returnValue;
   }
 
@@ -51,7 +51,7 @@ public class Elevator implements Subsystem {
   public void setElevatorPosition(double position) {
 
     // Convert desired position to distance in mm.
-    double targetRotations = position / RobotMap.ElevatorConstants.ROTATIONS_TO_DISTANCE;
+    double targetRotations = position / RobotMap.ElevatorConstants.MM_PER_ROTATION;
     m_elevatorMotor.setControl(m_positionVoltage.withPosition(targetRotations));
     double curPos = getElevatorPosition();
     System.out.println(

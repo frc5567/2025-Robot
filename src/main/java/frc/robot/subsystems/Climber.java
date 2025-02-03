@@ -33,7 +33,8 @@ public class Climber implements Subsystem {
    */
   public double getClimberPosition() {
     StatusSignal<Angle> rotations = m_climberMotor.getPosition();
-    double returnValue = rotations.getValue().magnitude() * RobotMap.ClimberConstants.ROTATIONS;
+    double returnValue =
+        rotations.getValue().magnitude() * RobotMap.ClimberConstants.MM_PER_ROTATION;
     return returnValue;
   }
 
@@ -45,7 +46,7 @@ public class Climber implements Subsystem {
   public void setClimberPosition(double position) {
 
     // Convert desired position to distance in mm.
-    double targetRotations = position / RobotMap.ClimberConstants.ROTATIONS;
+    double targetRotations = position / RobotMap.ClimberConstants.MM_PER_ROTATION;
     m_climberMotor.setControl(m_positionVoltage.withPosition(targetRotations));
     // double curPos = getClimberPosition();
   }
