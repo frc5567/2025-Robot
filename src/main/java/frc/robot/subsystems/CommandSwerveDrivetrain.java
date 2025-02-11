@@ -109,7 +109,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
   private SysIdRoutine m_sysIdRoutineToApply = m_sysIdRoutineRotation;
 
-  
   /**
    * Constructs a CTRE SwerveDrivetrain using the specified constants.
    *
