@@ -15,8 +15,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.Commands.MoveElevatorCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Elevator;
 
 public class RobotContainer {
   private double MaxSpeed =
@@ -41,6 +43,14 @@ public class RobotContainer {
 
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
+  // TODO: Find correct motor port for elevator.
+  public final Elevator m_elevator = new Elevator(29);
+
+  // TODO: Find correct port for pilot Xbox controller.
+  private final CommandXboxController m_pilotController = new CommandXboxController(0);
+
+  // TODO: Find correct port for copilot Xbox controller.
+  private final CommandXboxController m_copilotController = new CommandXboxController(1);
   /* Path follower */
   private final SendableChooser<Command> autoChooser;
 
@@ -92,6 +102,22 @@ public class RobotContainer {
     joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
     drivetrain.registerTelemetry(logger::telemeterize);
+
+    m_copilotController
+        .leftBumper()
+        .onTrue(new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.STARTING_HEIGHT));
+    m_copilotController
+        .y()
+        .onTrue(new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.INTAKE_HEIGHT));
+    m_copilotController
+        .a()
+        .onTrue(new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.L1_SCORE_HEIGHT));
+    m_copilotController
+        .b()
+        .onTrue(new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.L2_SCORE_HEIGHT));
+    m_copilotController
+        .x()
+        .onTrue(new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.L3_SCORE_HEIGHT));
   }
 
   public Command getAutonomousCommand() {
