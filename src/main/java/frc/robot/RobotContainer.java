@@ -15,8 +15,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.Commands.MoveElevatorCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Elevator;
 
 public class RobotContainer {
   private double MaxSpeed =
@@ -37,10 +39,16 @@ public class RobotContainer {
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
 
-  private final CommandXboxController joystick = new CommandXboxController(0);
-
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
+  // TODO: Find correct motor port for elevator.
+  public final Elevator m_elevator = new Elevator(29);
+
+  // TODO: Find correct port for pilot Xbox controller.
+  private final CommandXboxController m_pilotController = new CommandXboxController(0);
+
+  // TODO: Find correct port for copilot Xbox controller.
+  private final CommandXboxController m_copilotController = new CommandXboxController(1);
   /* Path follower */
   private final SendableChooser<Command> autoChooser;
 
@@ -64,34 +72,65 @@ public class RobotContainer {
             () ->
                 drive
                     .withVelocityX(
-                        -joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                        -m_pilotController.getLeftY()
+                            * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(
-                        -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                        -m_pilotController.getLeftX()
+                            * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(
-                        -joystick.getRightX()
+                        -m_pilotController.getRightX()
                             * MaxAngularRate) // Drive counterclockwise with negative X (left)
             ));
 
-    joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
-    joystick
+    m_pilotController.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    m_pilotController
         .b()
         .whileTrue(
             drivetrain.applyRequest(
                 () ->
                     point.withModuleDirection(
-                        new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
+                        new Rotation2d(
+                            -m_pilotController.getLeftY(), -m_pilotController.getLeftX()))));
 
     // Run SysId routines when holding back/start and X/Y.
     // Note that each routine should be run exactly once in a single log.
-    joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-    joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-    joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-    joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+    m_pilotController
+        .back()
+        .and(m_pilotController.y())
+        .whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+    m_pilotController
+        .back()
+        .and(m_pilotController.x())
+        .whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+    m_pilotController
+        .start()
+        .and(m_pilotController.y())
+        .whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+    m_pilotController
+        .start()
+        .and(m_pilotController.x())
+        .whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
     // reset the field-centric heading on left bumper press
-    joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+    m_pilotController.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
     drivetrain.registerTelemetry(logger::telemeterize);
+
+    m_copilotController
+        .leftBumper()
+        .onTrue(new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.STARTING_HEIGHT));
+    m_copilotController
+        .y()
+        .onTrue(new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.INTAKE_HEIGHT));
+    m_copilotController
+        .a()
+        .onTrue(new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.L1_SCORE_HEIGHT));
+    m_copilotController
+        .b()
+        .onTrue(new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.L2_SCORE_HEIGHT));
+    m_copilotController
+        .x()
+        .onTrue(new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.L3_SCORE_HEIGHT));
   }
 
   public Command getAutonomousCommand() {

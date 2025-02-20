@@ -15,6 +15,24 @@ public class RobotMap {
 
     // TODO: Figure out the actual max number of rotations for the elevator motor.
     public static final double ELEVATOR_MOTOR_MAX_ROTATIONS = 5.0;
+
+    // TODO: Figure out the correct starting height in mm.
+    public static final double STARTING_HEIGHT = 0.0;
+
+    // TODO: Figure out the correct height in mm needed for intake.
+    public static final double INTAKE_HEIGHT = 10.0;
+
+    // TODO: Figure out correct height in mm needed for level 1.
+    public static final double L1_SCORE_HEIGHT = 20.0;
+
+    // TODO: Figure out correct height in mm needed for level 2.
+    public static final double L2_SCORE_HEIGHT = 30.0;
+
+    // TODO: Figure out correct height in mm needed for level 3.
+    public static final double L3_SCORE_HEIGHT = 40.0;
+
+    // TODO: Figure out correct height in mm needed for level 4 or if we are even going for level 4.
+    public static final double L4_SCORE_HEIGHT = 50.0;
   }
 
   public static final class LauncherConstants {
