@@ -72,9 +72,11 @@ public class RobotContainer {
             () ->
                 drive
                     .withVelocityX(
-                        -m_pilotController.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                        -m_pilotController.getLeftY()
+                            * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(
-                        -m_pilotController.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                        -m_pilotController.getLeftX()
+                            * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(
                         -m_pilotController.getRightX()
                             * MaxAngularRate) // Drive counterclockwise with negative X (left)
@@ -87,14 +89,27 @@ public class RobotContainer {
             drivetrain.applyRequest(
                 () ->
                     point.withModuleDirection(
-                        new Rotation2d(-m_pilotController.getLeftY(), -m_pilotController.getLeftX()))));
+                        new Rotation2d(
+                            -m_pilotController.getLeftY(), -m_pilotController.getLeftX()))));
 
     // Run SysId routines when holding back/start and X/Y.
     // Note that each routine should be run exactly once in a single log.
-    m_pilotController.back().and(m_pilotController.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-    m_pilotController.back().and(m_pilotController.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-    m_pilotController.start().and(m_pilotController.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-    m_pilotController.start().and(m_pilotController.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+    m_pilotController
+        .back()
+        .and(m_pilotController.y())
+        .whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+    m_pilotController
+        .back()
+        .and(m_pilotController.x())
+        .whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+    m_pilotController
+        .start()
+        .and(m_pilotController.y())
+        .whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+    m_pilotController
+        .start()
+        .and(m_pilotController.x())
+        .whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
     // reset the field-centric heading on left bumper press
     m_pilotController.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
