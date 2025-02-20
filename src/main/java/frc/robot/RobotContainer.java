@@ -15,8 +15,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.Commands.MoveClimberToPositionCommand;
 import frc.robot.Commands.MoveElevatorCommand;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
 
@@ -40,6 +42,9 @@ public class RobotContainer {
   private final Telemetry logger = new Telemetry(MaxSpeed);
 
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+
+  // TODO: Find correct motor port for the climber.
+  public final Climber m_climber = new Climber(30);
 
   // TODO: Find correct motor port for elevator.
   public final Elevator m_elevator = new Elevator(29);
@@ -131,6 +136,12 @@ public class RobotContainer {
     m_copilotController
         .x()
         .onTrue(new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.L3_SCORE_HEIGHT));
+
+    m_copilotController
+        .rightBumper()
+        .onTrue(
+            new MoveClimberToPositionCommand(
+                m_climber, RobotMap.ClimberConstants.CLIMBER_TRAVEL_DISTANCE));
   }
 
   public Command getAutonomousCommand() {
