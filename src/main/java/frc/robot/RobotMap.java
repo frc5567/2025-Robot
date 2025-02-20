@@ -52,5 +52,7 @@ public class RobotMap {
     public static final double MM_PER_ROTATION = 5.0;
     // TODO: find correct margin of error (in mm).
     public static final double CLIMBER_MARGIN_OF_ERROR = 2.0;
+    // TODO: find correct travel distance in rotations (in mm).
+    public static final double CLIMBER_TRAVEL_DISTANCE = 100.0;
   }
 }
