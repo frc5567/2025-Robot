@@ -39,8 +39,6 @@ public class RobotContainer {
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
 
-  private final CommandXboxController joystick = new CommandXboxController(0);
-
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
   // TODO: Find correct motor port for elevator.
@@ -74,32 +72,32 @@ public class RobotContainer {
             () ->
                 drive
                     .withVelocityX(
-                        -joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                        -m_pilotController.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(
-                        -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                        -m_pilotController.getLeftX() * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(
-                        -joystick.getRightX()
+                        -m_pilotController.getRightX()
                             * MaxAngularRate) // Drive counterclockwise with negative X (left)
             ));
 
-    joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
-    joystick
+    m_pilotController.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    m_pilotController
         .b()
         .whileTrue(
             drivetrain.applyRequest(
                 () ->
                     point.withModuleDirection(
-                        new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
+                        new Rotation2d(-m_pilotController.getLeftY(), -m_pilotController.getLeftX()))));
 
     // Run SysId routines when holding back/start and X/Y.
     // Note that each routine should be run exactly once in a single log.
-    joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-    joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-    joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-    joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+    m_pilotController.back().and(m_pilotController.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+    m_pilotController.back().and(m_pilotController.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+    m_pilotController.start().and(m_pilotController.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+    m_pilotController.start().and(m_pilotController.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
     // reset the field-centric heading on left bumper press
-    joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+    m_pilotController.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
