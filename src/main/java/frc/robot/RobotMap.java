@@ -45,6 +45,10 @@ public class RobotMap {
   public static final class AngleMotorConstants {
     // TODO: find correct value of tolerance in degrees.
     public static final double ANGLE_TOLERANCE = 3.0;
+    // TODO: find correct angle of movement in degrees.
+    public static final double ANGLE_AT_LAUNCH = 120.0;
+    // TODO: Adjust angle if needed.
+    public static final double ANGLE_AT_INTAKE = 60.0;
   }
 
   public static final class ClimberConstants {
