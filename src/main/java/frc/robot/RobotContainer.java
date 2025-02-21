@@ -15,12 +15,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.Commands.IntakeCoralCommand;
+import frc.robot.Commands.LaunchCoralCommand;
 import frc.robot.Commands.MoveClimberToPositionCommand;
 import frc.robot.Commands.MoveElevatorCommand;
+import frc.robot.Commands.SetLaunchAngleCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.LaunchAngle;
+import frc.robot.subsystems.Launcher;
 
 public class RobotContainer {
   private double MaxSpeed =
@@ -42,6 +47,12 @@ public class RobotContainer {
   private final Telemetry logger = new Telemetry(MaxSpeed);
 
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+
+  // TODO: Find correct motor ports for launcher.
+  public final Launcher m_launcher = new Launcher(32, 0);
+
+  // TODO: Find correct motor port for the launch angle.
+  public final LaunchAngle m_launchAngle = new LaunchAngle(31);
 
   // TODO: Find correct motor port for the climber.
   public final Climber m_climber = new Climber(30);
@@ -142,6 +153,19 @@ public class RobotContainer {
         .onTrue(
             new MoveClimberToPositionCommand(
                 m_climber, RobotMap.ClimberConstants.CLIMBER_TRAVEL_DISTANCE));
+
+    m_copilotController
+        .rightTrigger()
+        .onTrue(
+            new SetLaunchAngleCommand(m_launchAngle, RobotMap.AngleMotorConstants.ANGLE_AT_INTAKE));
+    m_copilotController
+        .leftTrigger()
+        .onTrue(
+            new SetLaunchAngleCommand(m_launchAngle, RobotMap.AngleMotorConstants.ANGLE_AT_LAUNCH));
+
+    m_copilotController.povDownRight().onTrue(new LaunchCoralCommand(m_launcher));
+
+    m_copilotController.povDownLeft().onTrue(new IntakeCoralCommand(m_launcher));
   }
 
   public Command getAutonomousCommand() {
