@@ -5,6 +5,7 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.RobotMap;
 
 /**
  * @see frc.robot.subsystems.LaunchAngle Mechanism to control the angle of the launcher.
@@ -35,7 +36,12 @@ public class LaunchAngle implements Subsystem {
   public double getPosition() {
     // Gets the current motor positions in terms of rotations.
     StatusSignal<Angle> rotations = m_angleMotor.getPosition();
-    return rotations.getValueAsDouble();
+    Angle positionInRotations = rotations.getValue();
+    Angle offset =
+        Angle.ofRelativeUnits(
+            RobotMap.AngleMotorConstants.OFFSET, edu.wpi.first.units.Units.Rotations);
+    positionInRotations = positionInRotations.plus(offset);
+    return positionInRotations.magnitude();
   }
 
   /**

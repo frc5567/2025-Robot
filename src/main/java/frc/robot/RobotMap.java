@@ -49,6 +49,8 @@ public class RobotMap {
     public static final double ANGLE_AT_LAUNCH = 120.0;
     // TODO: Adjust angle if needed.
     public static final double ANGLE_AT_INTAKE = 60.0;
+
+    public static final double OFFSET = -0.051270;
   }
 
   public static final class ClimberConstants {
