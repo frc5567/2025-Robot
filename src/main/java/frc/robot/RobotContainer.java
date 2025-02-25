@@ -48,7 +48,6 @@ public class RobotContainer {
 
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-
   public final Launcher m_launcher =
       new Launcher(
           RobotMap.LauncherConstants.LAUNCHER_MOTOR_CAN_ID,
@@ -61,10 +60,8 @@ public class RobotContainer {
 
   public final Elevator m_elevator = new Elevator(RobotMap.ElevatorConstants.ELEVATOR_MOTOR_CAN_ID);
 
-  
   private final CommandXboxController m_pilotController =
       new CommandXboxController(RobotMap.PilotControlConstants.PILOT_CONTROLER_USB_PORT);
-
 
   private final CommandXboxController m_copilotController =
       new CommandXboxController(RobotMap.CopilotControlerConstants.COPILOT_CONTROLER_USB_PORT);
