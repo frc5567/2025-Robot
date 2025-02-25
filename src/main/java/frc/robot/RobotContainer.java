@@ -61,10 +61,10 @@ public class RobotContainer {
   public final Elevator m_elevator = new Elevator(RobotMap.ElevatorConstants.ELEVATOR_MOTOR_CAN_ID);
 
   private final CommandXboxController m_pilotController =
-      new CommandXboxController(RobotMap.PilotControlConstants.PILOT_CONTROLER_USB_PORT);
+      new CommandXboxController(RobotMap.PilotControllerConstants.PILOT_CONTROLLER_USB_PORT);
 
   private final CommandXboxController m_copilotController =
-      new CommandXboxController(RobotMap.CopilotControlerConstants.COPILOT_CONTROLER_USB_PORT);
+      new CommandXboxController(RobotMap.CopilotControllerConstants.COPILOT_CONTROLLER_USB_PORT);
   /* Path follower */
   private final SendableChooser<Command> autoChooser;
 
