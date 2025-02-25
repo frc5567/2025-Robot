@@ -29,12 +29,17 @@ public class Climber implements Subsystem {
   /**
    * Gets the motor position in terms of distance.
    *
-   * @return the position of the climber in mm.
+   * @return The position of the climber in mm.
    */
   public double getClimberPosition() {
     StatusSignal<Angle> rotations = m_climberMotor.getPosition();
+    Angle positionInRotations = rotations.getValue();
+    Angle offset =
+        Angle.ofRelativeUnits(
+            RobotMap.ClimberConstants.CLIMBER_OFFSET, edu.wpi.first.units.Units.Rotations);
+    positionInRotations = positionInRotations.plus(offset);
     double returnValue =
-        rotations.getValue().magnitude() * RobotMap.ClimberConstants.MM_PER_ROTATION;
+        positionInRotations.magnitude() * RobotMap.ClimberConstants.MM_PER_ROTATION;
     return returnValue;
   }
 

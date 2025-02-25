@@ -49,16 +49,20 @@ public class RobotContainer {
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
   // TODO: Find correct motor ports for launcher.
-  public final Launcher m_launcher = new Launcher(32, 0);
+  public final Launcher m_launcher =
+      new Launcher(
+          RobotMap.LauncherConstants.LAUNCHER_MOTOR_CAN_ID,
+          RobotMap.LauncherConstants.LAUNCHER_SENSOR_DIO_PORT);
 
   // TODO: Find correct motor port for the launch angle.
-  public final LaunchAngle m_launchAngle = new LaunchAngle(31);
+  public final LaunchAngle m_launchAngle =
+      new LaunchAngle(RobotMap.AngleMotorConstants.LAUNCH_ANGLE_MOTOR_CAN_ID);
 
   // TODO: Find correct motor port for the climber.
-  public final Climber m_climber = new Climber(30);
+  public final Climber m_climber = new Climber(RobotMap.ClimberConstants.CLIMBER_MOTOR_CAN_ID);
 
   // TODO: Find correct motor port for elevator.
-  public final Elevator m_elevator = new Elevator(29);
+  public final Elevator m_elevator = new Elevator(RobotMap.ElevatorConstants.ELEVATOR_MOTOR_CAN_ID);
 
   // TODO: Find correct port for pilot Xbox controller.
   private final CommandXboxController m_pilotController = new CommandXboxController(0);
