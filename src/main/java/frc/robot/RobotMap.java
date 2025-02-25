@@ -71,4 +71,14 @@ public class RobotMap {
 
     public static final double CLIMBER_OFFSET = -5.281250;
   }
+
+  public static final class PilotControllerConstants {
+    // TODO find the corect usb port for the pilot controler.
+    public static final int PILOT_CONTROLLER_USB_PORT = 0;
+  }
+
+  public static final class CopilotControllerConstants {
+    // TODO find the corect usb port for the copilot controler.
+    public static final int COPILOT_CONTROLLER_USB_PORT = 1;
+  }
 }
