@@ -35,7 +35,7 @@ public class RobotContainer {
           .in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
   /* Setting up bindings for necessary control of the swerve drive platform */
-  private final SwerveRequest.FieldCentric drive =
+  public final SwerveRequest.FieldCentric drive =
       new SwerveRequest.FieldCentric()
           .withDeadband(MaxSpeed * 0.1)
           .withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
@@ -46,7 +46,7 @@ public class RobotContainer {
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
 
-  public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+  public final CommandSwerveDrivetrain m_drivetrain = TunerConstants.createDrivetrain();
 
   // TODO: Find correct motor ports for launcher.
   public final Launcher m_launcher =
@@ -86,9 +86,9 @@ public class RobotContainer {
   private void configureBindings() {
     // Note that X is defined as forward according to WPILib convention,
     // and Y is defined as to the left according to WPILib convention.
-    drivetrain.setDefaultCommand(
+    m_drivetrain.setDefaultCommand(
         // Drivetrain will execute this command periodically
-        drivetrain.applyRequest(
+        m_drivetrain.applyRequest(
             () ->
                 drive
                     .withVelocityX(
@@ -102,11 +102,11 @@ public class RobotContainer {
                             * MaxAngularRate) // Drive counterclockwise with negative X (left)
             ));
 
-    m_pilotController.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    m_pilotController.a().whileTrue(m_drivetrain.applyRequest(() -> brake));
     m_pilotController
         .b()
         .whileTrue(
-            drivetrain.applyRequest(
+            m_drivetrain.applyRequest(
                 () ->
                     point.withModuleDirection(
                         new Rotation2d(
@@ -117,24 +117,26 @@ public class RobotContainer {
     m_pilotController
         .back()
         .and(m_pilotController.y())
-        .whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        .whileTrue(m_drivetrain.sysIdDynamic(Direction.kForward));
     m_pilotController
         .back()
         .and(m_pilotController.x())
-        .whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        .whileTrue(m_drivetrain.sysIdDynamic(Direction.kReverse));
     m_pilotController
         .start()
         .and(m_pilotController.y())
-        .whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        .whileTrue(m_drivetrain.sysIdQuasistatic(Direction.kForward));
     m_pilotController
         .start()
         .and(m_pilotController.x())
-        .whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        .whileTrue(m_drivetrain.sysIdQuasistatic(Direction.kReverse));
 
     // reset the field-centric heading on left bumper press
-    m_pilotController.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+    m_pilotController
+        .leftBumper()
+        .onTrue(m_drivetrain.runOnce(() -> m_drivetrain.seedFieldCentric()));
 
-    drivetrain.registerTelemetry(logger::telemeterize);
+    m_drivetrain.registerTelemetry(logger::telemeterize);
 
     m_copilotController
         .leftBumper()
