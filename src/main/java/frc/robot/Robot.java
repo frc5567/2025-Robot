@@ -62,10 +62,13 @@ public class Robot extends TimedRobot {
      * of how to use vision should be tuned per-robot and to the team's specification.
      */
     if (kUseLimelight) {
-      if (m_alliance.get() == Alliance.Red) {
-        m_curPoseEstimate = LimelightHelpers.getBotPoseEstimate_wpiRed("limelight");
-      } else if (m_alliance.get() == Alliance.Blue) {
-        m_curPoseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+      m_alliance = DriverStation.getAlliance();
+      if (m_alliance.isPresent()) {
+        if (m_alliance.get() == Alliance.Red) {
+          m_curPoseEstimate = LimelightHelpers.getBotPoseEstimate_wpiRed("limelight");
+        } else if (m_alliance.get() == Alliance.Blue) {
+          m_curPoseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+        }
       }
 
       if ((m_curPoseEstimate != null)
