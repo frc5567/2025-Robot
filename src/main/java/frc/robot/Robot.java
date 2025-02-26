@@ -6,26 +6,53 @@ package frc.robot;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.LimelightHelpers.PoseEstimate;
+import java.util.Optional;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
 
-  // TODO: Set this to true in order to use the limelight
-  private final boolean kUseLimelight = false;
+  private PoseEstimate m_curPoseEstimate;
+
+  private int m_outputCounter = 0;
+
+  private final boolean kUseLimelight = true;
+
+  private Optional<Alliance> m_alliance;
+
+  private final Field2d m_field;
 
   public Robot() {
     m_robotContainer = new RobotContainer();
+    m_field = new Field2d();
+  }
+
+  @Override
+  public void robotInit() {
+    m_alliance = DriverStation.getAlliance();
+
+    // Do this in either robot or subsystem init
+
+    SmartDashboard.putData("Field", m_field);
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-
+    m_outputCounter++;
+    if (m_outputCounter >= 50) {
+      m_outputCounter = 0;
+    }
     /*
      * This example of adding Limelight is very simple and may not be sufficient for on-field use.
      * Users typically need to provide a standard deviation that scales with the distance to target
@@ -35,11 +62,25 @@ public class Robot extends TimedRobot {
      * of how to use vision should be tuned per-robot and to the team's specification.
      */
     if (kUseLimelight) {
-      var llMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
-      if (llMeasurement != null) {
-        m_robotContainer.drivetrain.addVisionMeasurement(
-            llMeasurement.pose, Utils.fpgaToCurrentTime(llMeasurement.timestampSeconds));
+      m_alliance = DriverStation.getAlliance();
+      if (m_alliance.isPresent()) {
+        if (m_alliance.get() == Alliance.Red) {
+          m_curPoseEstimate = LimelightHelpers.getBotPoseEstimate_wpiRed("limelight");
+        } else if (m_alliance.get() == Alliance.Blue) {
+          m_curPoseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+        }
       }
+
+      if ((m_curPoseEstimate != null)
+          && !((m_curPoseEstimate.pose.getX() == 0) && (m_curPoseEstimate.pose.getY() == 0))) {
+        m_robotContainer.m_drivetrain.addVisionMeasurement(
+            m_curPoseEstimate.pose, Utils.fpgaToCurrentTime(m_curPoseEstimate.timestampSeconds));
+      }
+    }
+    double curTime = Utils.getCurrentTimeSeconds();
+    Optional<Pose2d> curPose = m_robotContainer.m_drivetrain.samplePoseAt(curTime);
+    if (curPose.isPresent()) {
+      m_field.setRobotPose(curPose.get());
     }
   }
 
@@ -54,11 +95,19 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    m_alliance = DriverStation.getAlliance();
+
+    m_robotContainer.m_drivetrain.seedFieldCentric();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+
+    // We want the mechanisms to be able to be manually controlled when the robot is disabled
+    // but they need to be in Brake mode when enabled so it holds position when being driven.
+    // m_robotContainer.m_elevator.setBrakeMode(NeutralModeValue.Brake);
+    // m_robotContainer.m_launcherAngle.setBrakeMode(NeutralModeValue.Brake);
   }
 
   @Override
@@ -73,6 +122,15 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     SignalLogger.start();
+
+    m_alliance = DriverStation.getAlliance();
+
+    SignalLogger.start();
+
+    // We want the mechanisms to be able to manually controlled when the robot is disabled
+    // but they need to be in brake mode when enabled so it will hold its position when being driven
+    // m_robotContainer.m_elevator.setBrakeMode(NeutralModeValue.Brake);
+    // m_robotContainer.m_launcherAngle.setBrakeMode(NeutralModeValue.Brake);
   }
 
   @Override
@@ -86,6 +144,12 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     CommandScheduler.getInstance().cancelAll();
+
+    m_alliance = DriverStation.getAlliance();
+    // We want the mechanisms to be able to be manually controlled when the robot is disabled
+    // but they need to be in Brake mode when enabled so it holds position when being driven.
+    // m_robotContainer.m_elevator.setBrakeMode(NeutralModeValue.Brake);
+    // m_robotContainer.m_launcherAngle.setBrakeMode(NeutralModeValue.Brake);
   }
 
   @Override
