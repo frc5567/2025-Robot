@@ -60,12 +60,12 @@ public class RobotMap {
   }
 
   public static final class ClimberConstants {
-    // TODO: find correct number of rotations.
-    public static final double MM_PER_ROTATION = 5.0;
-    // TODO: find correct margin of error (in mm).
+    // TODO: find correct margin of error rotations.
     public static final double CLIMBER_MARGIN_OF_ERROR = 2.0;
-    // TODO: find correct travel distance in rotations (in mm).
-    public static final double CLIMBER_TRAVEL_DISTANCE = 100.0;
+
+    /** 40:1 gear ratio and 2.25 rotations of the output shaft for complete travel. */
+    public static final double CLIMBER_TRAVEL_DISTANCE = 90.0;
+
     // TODO: find the correct CAN ID for the Climber motor.
     public static final int CLIMBER_MOTOR_CAN_ID = 30;
 
