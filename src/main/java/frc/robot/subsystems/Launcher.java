@@ -1,7 +1,13 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.controls.VelocityVoltage;
+import static edu.wpi.first.units.Units.*;
+
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
@@ -16,7 +22,15 @@ public class Launcher implements Subsystem {
 
   private DigitalInput m_coralSensor;
 
-  private final VelocityVoltage m_velocityVoltage = new VelocityVoltage(0).withSlot(0);
+  private static final Slot0Configs launcherGains =
+      new Slot0Configs()
+          .withKP(2.5)
+          .withKI(0)
+          .withKD(0)
+          .withKS(0.001)
+          .withKV(0.11)
+          .withKA(0.003)
+          .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseClosedLoopSign);
 
   /**
    * The constructor method for the launcher class.
@@ -27,15 +41,20 @@ public class Launcher implements Subsystem {
   public Launcher(int motorPort, int sensorPort) {
     m_launcherMotor = new TalonFX(motorPort);
     m_coralSensor = new DigitalInput(sensorPort);
+    TalonFXConfiguration configs = new TalonFXConfiguration();
+    configs.Voltage.withPeakForwardVoltage(Volts.of(8)).withPeakReverseVoltage(Volts.of(-8));
+    configs.withSlot0(launcherGains);
+    m_launcherMotor.getConfigurator().apply(configs);
   }
 
   /**
    * Sets the launcher motor to the desired speed.
    *
-   * @param velocity velocity in rotations per seconds.
+   * @param percentPower percent power to the motor.
    */
-  public void setLauncherSpeed(double velocity) {
-    m_launcherMotor.setControl(m_velocityVoltage.withVelocity(velocity));
+  public void setLauncherSpeed(double percentPower) {
+    DutyCycleOut power = new DutyCycleOut(percentPower);
+    m_launcherMotor.setControl(power);
   }
 
   /** Stops the launcher motor when the desired speed is zero. */
@@ -44,6 +63,15 @@ public class Launcher implements Subsystem {
   }
 
   public boolean readSensor() {
-    return m_coralSensor.get();
+    return !m_coralSensor.get();
+  }
+
+  /**
+   * Setting the break mode will make the motor ether brake or coast when not given power. Need to
+   * expose this so we can set it to coast in disabledInit so the elevator can be manually
+   * controlled when the bot is disabled.
+   */
+  public void setBrakeMode(NeutralModeValue mode) {
+    m_launcherMotor.setNeutralMode(mode);
   }
 }

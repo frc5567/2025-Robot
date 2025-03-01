@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -85,7 +86,13 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+
+    m_robotContainer.m_elevator.setBrakeMode(NeutralModeValue.Coast);
+    m_robotContainer.m_launchAngle.setBrakeMode(NeutralModeValue.Coast);
+    m_robotContainer.m_climber.setBrakeMode(NeutralModeValue.Coast);
+    m_robotContainer.m_launcher.setBrakeMode(NeutralModeValue.Coast);
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -106,8 +113,10 @@ public class Robot extends TimedRobot {
 
     // We want the mechanisms to be able to be manually controlled when the robot is disabled
     // but they need to be in Brake mode when enabled so it holds position when being driven.
-    // m_robotContainer.m_elevator.setBrakeMode(NeutralModeValue.Brake);
-    // m_robotContainer.m_launcherAngle.setBrakeMode(NeutralModeValue.Brake);
+    m_robotContainer.m_elevator.setBrakeMode(NeutralModeValue.Brake);
+    m_robotContainer.m_launchAngle.setBrakeMode(NeutralModeValue.Brake);
+    m_robotContainer.m_climber.setBrakeMode(NeutralModeValue.Brake);
+    m_robotContainer.m_launcher.setBrakeMode(NeutralModeValue.Brake);
   }
 
   @Override
@@ -121,6 +130,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
     SignalLogger.start();
 
     m_alliance = DriverStation.getAlliance();
@@ -129,8 +139,10 @@ public class Robot extends TimedRobot {
 
     // We want the mechanisms to be able to manually controlled when the robot is disabled
     // but they need to be in brake mode when enabled so it will hold its position when being driven
-    // m_robotContainer.m_elevator.setBrakeMode(NeutralModeValue.Brake);
-    // m_robotContainer.m_launcherAngle.setBrakeMode(NeutralModeValue.Brake);
+    m_robotContainer.m_elevator.setBrakeMode(NeutralModeValue.Brake);
+    m_robotContainer.m_launchAngle.setBrakeMode(NeutralModeValue.Brake);
+    m_robotContainer.m_climber.setBrakeMode(NeutralModeValue.Brake);
+    m_robotContainer.m_launcher.setBrakeMode(NeutralModeValue.Brake);
   }
 
   @Override
@@ -148,8 +160,10 @@ public class Robot extends TimedRobot {
     m_alliance = DriverStation.getAlliance();
     // We want the mechanisms to be able to be manually controlled when the robot is disabled
     // but they need to be in Brake mode when enabled so it holds position when being driven.
-    // m_robotContainer.m_elevator.setBrakeMode(NeutralModeValue.Brake);
-    // m_robotContainer.m_launcherAngle.setBrakeMode(NeutralModeValue.Brake);
+    m_robotContainer.m_elevator.setBrakeMode(NeutralModeValue.Brake);
+    m_robotContainer.m_launchAngle.setBrakeMode(NeutralModeValue.Brake);
+    m_robotContainer.m_climber.setBrakeMode(NeutralModeValue.Brake);
+    m_robotContainer.m_launcher.setBrakeMode(NeutralModeValue.Brake);
   }
 
   @Override

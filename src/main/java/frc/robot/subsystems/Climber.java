@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.RobotMap;
@@ -63,5 +64,14 @@ public class Climber implements Subsystem {
    */
   public void stopClimber() {
     m_climberMotor.set(0);
+  }
+
+  /**
+   * Setting the break mode will make the motor ether brake or coast when not given power. Need to
+   * expose this so we can set it to coast in disabledInit so the elevator can be manually
+   * controlled when the bot is disabled.
+   */
+  public void setBrakeMode(NeutralModeValue mode) {
+    m_climberMotor.setNeutralMode(mode);
   }
 }

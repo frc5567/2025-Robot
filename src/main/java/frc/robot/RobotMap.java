@@ -8,7 +8,7 @@ public class RobotMap {
     public static final int ELEVATOR_MOTOR_CAN_ID = 29;
 
     // TODO: Figure out the actual distance traveled (in mm) per one rotation of the elevator motor.
-    public static final double MM_PER_ROTATION = 150.0;
+    public static final double MM_PER_ROTATION = 8.4;
 
     // TODO: Figure out the actual margin of error we want (in mm).
     public static final double ELEVATOR_MARGIN_OF_ERROR = 10.0;
@@ -20,39 +20,41 @@ public class RobotMap {
     public static final double STARTING_HEIGHT = 0.0;
 
     // TODO: Figure out the correct height in mm needed for intake.
-    public static final double INTAKE_HEIGHT = 10.0;
+    public static final double INTAKE_HEIGHT = 500.0;
 
     // TODO: Figure out correct height in mm needed for level 1.
-    public static final double L1_SCORE_HEIGHT = 20.0;
+    public static final double L1_SCORE_HEIGHT = 300.0;
 
     // TODO: Figure out correct height in mm needed for level 2.
-    public static final double L2_SCORE_HEIGHT = 30.0;
+    public static final double L2_SCORE_HEIGHT = 600.0;
 
     // TODO: Figure out correct height in mm needed for level 3.
-    public static final double L3_SCORE_HEIGHT = 40.0;
+    public static final double L3_SCORE_HEIGHT = 900.0;
 
     // TODO: Figure out correct height in mm needed for level 4 or if we are even going for level 4.
-    public static final double L4_SCORE_HEIGHT = 50.0;
+    public static final double L4_SCORE_HEIGHT = 1200.0;
 
-    public static final double POSITION_OFFSET = -0.011230;
+    public static final double POSITION_OFFSET = 11.0;
   }
 
   public static final class LauncherConstants {
     // TODO: Figure out the actual motor CAN ID for launcher.
     public static final int LAUNCHER_MOTOR_CAN_ID = 32;
     // TODO: Figure out the actual Launch speed we want it to launch at.
-    public static final double LAUNCHER_SPEED = 20;
+    public static final double LAUNCHER_SPEED = 0.2;
+
+    public static final double INTAKE_SPEED = -0.1;
     // TODO: Figure out the actual DIO port for Launcher sensor.
-    public static final int LAUNCHER_SENSOR_DIO_PORT = 0;
+    public static final int LAUNCHER_SENSOR_DIO_PORT = 9;
   }
 
   public static final class AngleMotorConstants {
     // TODO: find correct value of tolerance in degrees.
-    public static final double ANGLE_TOLERANCE = 3.0;
+    public static final double ANGLE_TOLERANCE = 0.25;
     // TODO: find correct angle of movement in degrees.
-    public static final double ANGLE_AT_LAUNCH = 120.0;
+    public static final double ANGLE_AT_LAUNCH = 14.0;
     // TODO: Adjust angle if needed.
-    public static final double ANGLE_AT_INTAKE = 60.0;
+    public static final double ANGLE_AT_INTAKE = 7.5;
     // TODO: Figure out the actual CAN ID for the launcher angle.
     public static final int LAUNCH_ANGLE_MOTOR_CAN_ID = 31;
 
