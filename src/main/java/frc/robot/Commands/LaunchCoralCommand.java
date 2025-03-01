@@ -49,7 +49,7 @@ public class LaunchCoralCommand extends Command {
    */
   @Override
   public boolean isFinished() {
-    return !m_launcherSubsystem.readSensor();
+    return false;
   }
 
   /**

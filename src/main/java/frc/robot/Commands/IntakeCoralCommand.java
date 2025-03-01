@@ -21,6 +21,7 @@ public class IntakeCoralCommand extends Command {
    */
   public IntakeCoralCommand(Launcher launcherSubsystem) {
     m_launcherSubsystem = launcherSubsystem;
+    // System.out.println("Coral Contaned");
   }
 
   /**
@@ -39,7 +40,7 @@ public class IntakeCoralCommand extends Command {
    */
   @Override
   public void execute() {
-    m_launcherSubsystem.setLauncherSpeed(-LauncherConstants.LAUNCHER_SPEED);
+    m_launcherSubsystem.setLauncherSpeed(LauncherConstants.INTAKE_SPEED);
   }
 
   /**
