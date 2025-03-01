@@ -148,7 +148,7 @@ public class RobotContainer {
         .onTrue(new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.L2_SCORE_HEIGHT));
     m_copilotController
         .x()
-        .onTrue(new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.L3_SCORE_HEIGHT));
+        .onTrue(new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.L4_SCORE_HEIGHT));
 
     m_copilotController
         .rightBumper()
@@ -165,9 +165,9 @@ public class RobotContainer {
         .onTrue(
             new SetLaunchAngleCommand(m_launchAngle, RobotMap.AngleMotorConstants.ANGLE_AT_LAUNCH));
 
-    m_copilotController.povDownRight().onTrue(new LaunchCoralCommand(m_launcher));
+    m_copilotController.povLeft().whileTrue(new LaunchCoralCommand(m_launcher));
 
-    m_copilotController.povDownLeft().onTrue(new IntakeCoralCommand(m_launcher));
+    m_copilotController.povRight().onTrue(new IntakeCoralCommand(m_launcher));
   }
 
   public Command getAutonomousCommand() {
