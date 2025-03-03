@@ -33,9 +33,7 @@ public class MoveClimberToPositionCommand extends Command {
    * @return returns nothing
    */
   @Override
-  public void initialize() {
-    // lala
-  }
+  public void initialize() {}
 
   /**
    * @see frc.robot.Commands.MoveClimberToPositionCommand

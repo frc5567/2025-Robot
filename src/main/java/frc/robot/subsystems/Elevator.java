@@ -43,7 +43,7 @@ public class Elevator implements Subsystem {
 
     Angle offset =
         Angle.ofRelativeUnits(
-            RobotMap.ElevatorConstants.POSITION_OFFSET, edu.wpi.first.units.Units.Rotations);
+            RobotMap.ElevatorConstants.OFFSET, edu.wpi.first.units.Units.Rotations);
 
     positionInRotations = positionInRotations.plus(offset);
 
