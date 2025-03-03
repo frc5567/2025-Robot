@@ -86,12 +86,12 @@ public class RobotMap {
   }
 
   public static final class PilotControllerConstants {
-    // Allows us to identify the computer port we need to plug the pilot controler wire into.
+    // Allows us to identify the usb port in the driver station.
     public static final int PILOT_CONTROLLER_USB_PORT = 0;
   }
 
   public static final class CopilotControllerConstants {
-    // Allows us to identify the computer port we need to plug the Copilot controler wire into.
+    // Allows us to identify the usb port in the driver station.
     public static final int COPILOT_CONTROLLER_USB_PORT = 1;
   }
 }

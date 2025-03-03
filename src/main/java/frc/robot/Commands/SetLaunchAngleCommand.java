@@ -10,7 +10,7 @@ import frc.robot.subsystems.LaunchAngle;
  */
 public class SetLaunchAngleCommand extends Command {
 
-  private final LaunchAngle m_launchAngle; // In degrees
+  private final LaunchAngle m_launchAngle;
   private final double m_targetAnglePostion; // In degrees
 
   /**
