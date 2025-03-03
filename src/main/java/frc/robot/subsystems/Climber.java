@@ -37,7 +37,8 @@ public class Climber implements Subsystem {
     Angle positionInRotations = rotations.getValue();
     Angle offset =
         Angle.ofRelativeUnits(
-            RobotMap.ClimberConstants.CLIMBER_OFFSET, edu.wpi.first.units.Units.Rotations);
+            // Offset found by measuring through pheonix tuner mesured in rotations.
+            RobotMap.ClimberConstants.OFFSET, edu.wpi.first.units.Units.Rotations);
     positionInRotations = positionInRotations.plus(offset);
     double returnValue = positionInRotations.magnitude();
     return returnValue;
