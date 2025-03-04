@@ -6,7 +6,6 @@ import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
-import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -20,10 +19,6 @@ import frc.robot.RobotMap;
  * @return the one instance of the elevator.
  */
 public class Elevator implements Subsystem {
-
-  // Creates a member variable that represents the voltage needed to get to a position, and uses PID
-  // to not overshoot target voltage. Start at position 0 (bottom).
-  private PositionVoltage m_positionVoltage = new PositionVoltage(0).withSlot(0);
 
   // Defines the variable "elevatorMotor" as a TalonFX motor.
   private TalonFX m_elevatorMotor;
