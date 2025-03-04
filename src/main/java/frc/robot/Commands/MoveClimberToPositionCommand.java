@@ -6,7 +6,7 @@ import frc.robot.subsystems.Climber;
 
 /**
  * @see frc.robot.Commands.MoveClimberToPositionCommand
- *     <p>Command that moves the climber to the correct position.
+ *     <p>Command that moves the climber to the correct position in terms of mm.
  * @return an instance
  */
 public class MoveClimberToPositionCommand extends Command {
@@ -55,7 +55,7 @@ public class MoveClimberToPositionCommand extends Command {
   public boolean isFinished() {
 
     double currentPosition = m_climberSubsystem.getClimberPosition();
-
+    // curpos and targetPosition are in terms of mm.
     return Math.abs(currentPosition - m_targetPosition)
         < RobotMap.ClimberConstants.CLIMBER_MARGIN_OF_ERROR;
   }

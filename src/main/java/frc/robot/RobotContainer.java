@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Commands.IntakeCoralCommand;
 import frc.robot.Commands.LaunchCoralCommand;
+import frc.robot.Commands.MoveClimberAssistToPositionCommand;
 import frc.robot.Commands.MoveClimberToPositionCommand;
 import frc.robot.Commands.MoveElevatorCommand;
 import frc.robot.Commands.SetLaunchAngleCommand;
@@ -159,6 +160,12 @@ public class RobotContainer {
         .onTrue(
             new MoveClimberToPositionCommand(
                 m_climber, RobotMap.ClimberConstants.CLIMBER_TRAVEL_DISTANCE));
+
+    m_copilotController
+        .povDown()
+        .onTrue(
+            new MoveClimberAssistToPositionCommand(
+                m_climberAssist, RobotMap.ClimberAssistConstants.CLIMBER_ASSIST_TRAVEL_DISTANCE));
 
     m_copilotController
         .rightTrigger()
