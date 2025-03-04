@@ -10,8 +10,8 @@
 
 ### Robot Controller Controls:
 **Pilot controls:**
-* Left stick Forword = Bot moves forwords
-* Left stick Back = Bot moves backwords
+* Left stick Forword = Bot moves forward
+* Left stick Back = Bot moves backward
 * Left stick Right = Bot moves right
 * Left stick Left = Bot moves left
 

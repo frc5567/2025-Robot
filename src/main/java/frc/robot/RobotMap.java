@@ -103,7 +103,7 @@ public class RobotMap {
     // TODO: find correct margin of error for the climber assist.
     public static final double CLIMBER_ASSIST_MARGIN_OF_ERROR = 2.0;
     // TODO: find diameter of rack and pinion gear multiplyed by pi devided by 70 for gear ratio to
-    // find travel per rotation.
+    // find travel per rotation in mm.
     public static final double CLIMBER_ASSIST_TRAVEL_DISTANCE = 10.0;
   }
 }
