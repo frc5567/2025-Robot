@@ -96,9 +96,13 @@ public class RobotMap {
   }
 
   public static final class ClimberAssistConstants {
-    // TODO: find the correct offset for the climber assist motor.
-    public static final double OFFSET = 2;
     // TODO: find corect CAN ID port.
     public static final int CLIMBER_ASSIST_MOTOR_CAN_ID = 33;
+    // TODO: find the correct offset for the climber assist motor.
+    public static final double OFFSET = 2;
+    // TODO: find correct margin of error for the climber assist.
+    public static final double CLIMBER_ASSIST_MARGIN_OF_ERROR = 2.0;
+    // TODO: find the corect travel distance for the climber assist.
+    public static final double CLIMBER_ASSIST_TRAVEL_DISTANCE = 10.0;
   }
 }
