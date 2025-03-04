@@ -22,6 +22,7 @@ import frc.robot.Commands.MoveElevatorCommand;
 import frc.robot.Commands.SetLaunchAngleCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.ClimberAssist;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LaunchAngle;
@@ -57,6 +58,9 @@ public class RobotContainer {
       new LaunchAngle(RobotMap.AngleMotorConstants.LAUNCH_ANGLE_MOTOR_CAN_ID);
 
   public final Climber m_climber = new Climber(RobotMap.ClimberConstants.CLIMBER_MOTOR_CAN_ID);
+
+  public final ClimberAssist m_climberAssist =
+      new ClimberAssist(RobotMap.ClimberAssistConstants.CLIMBER_ASSIST_MOTOR_CAN_ID);
 
   public final Elevator m_elevator = new Elevator(RobotMap.ElevatorConstants.ELEVATOR_MOTOR_CAN_ID);
 

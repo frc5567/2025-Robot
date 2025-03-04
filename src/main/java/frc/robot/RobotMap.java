@@ -94,4 +94,11 @@ public class RobotMap {
     // Allows us to identify the usb port in the driver station.
     public static final int COPILOT_CONTROLLER_USB_PORT = 1;
   }
+
+  public static final class ClimberAssistConstants {
+    // TODO: find the correct offset for the climber assist motor.
+    public static final double OFFSET = 2;
+    // TODO: find corect CAN ID port.
+    public static final int CLIMBER_ASSIST_MOTOR_CAN_ID = 33;
+  }
 }
