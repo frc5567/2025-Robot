@@ -5,8 +5,10 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import edu.wpi.first.units.measure.Angle;
@@ -19,14 +21,17 @@ import frc.robot.RobotMap;
  */
 public class LaunchAngle implements Subsystem {
 
-  // Creates a member variable that represents the voltage needed to get to a position, and uses PID
-  // to not overshoot target voltage. Start at position 0 (bottom).
-  private PositionVoltage m_positionVoltage = new PositionVoltage(0).withSlot(0);
+  private final MotionMagicVoltage m_motionMagicVoltage = new MotionMagicVoltage(0).withSlot(0);
 
   // TODO: Must measure and tune these values, preferably under load!
   private static final Slot0Configs launcherAngleGains =
       new Slot0Configs()
           .withKP(2.5)
+          .withKI(0)
+          .withKD(0)
+          .withKS(0.001)
+          .withKV(0.11)
+          .withKA(0.003)
           .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseClosedLoopSign);
 
   private TalonFX m_angleMotor;
@@ -40,6 +45,12 @@ public class LaunchAngle implements Subsystem {
     m_angleMotor = new TalonFX(motorPort);
     TalonFXConfiguration configs = new TalonFXConfiguration();
     configs.Voltage.withPeakForwardVoltage(Volts.of(2)).withPeakReverseVoltage(Volts.of(-2));
+    configs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    var motionMagicConfigs = configs.MotionMagic;
+    motionMagicConfigs.MotionMagicCruiseVelocity = 80;// Target cruise velocity of 80 rps
+    motionMagicConfigs.MotionMagicAcceleration =
+        160; // Target acceleration of 160 rps/s (0.5 seconds)
+    motionMagicConfigs.MotionMagicJerk = 1600; // Target jerk of 1600 rps/s/s (0.1 seconds)
     configs.withSlot0(launcherAngleGains);
     m_angleMotor.getConfigurator().apply(configs);
   }
@@ -67,7 +78,7 @@ public class LaunchAngle implements Subsystem {
    */
   public void setPosition(double position) {
     position -= RobotMap.AngleMotorConstants.OFFSET;
-    m_angleMotor.setControl(m_positionVoltage.withPosition(position));
+    m_angleMotor.setControl(m_motionMagicVoltage.withPosition(position));
   }
 
   /** Stops the angle motor of the launcher. */
