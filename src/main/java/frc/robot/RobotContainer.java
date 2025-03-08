@@ -15,12 +15,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.Commands.IntakeCoralCommand;
-import frc.robot.Commands.LaunchCoralCommand;
-import frc.robot.Commands.MoveClimberAssistToPositionCommand;
-import frc.robot.Commands.MoveClimberToPositionCommand;
-import frc.robot.Commands.MoveElevatorCommand;
-import frc.robot.Commands.SetLaunchAngleCommand;
+import frc.robot.commands.ClimbCommand;
+import frc.robot.commands.ClimbInitialCommand;
+import frc.robot.commands.DriveToLeftBranch;
+import frc.robot.commands.DriveToRightBranch;
+import frc.robot.commands.IntakeCoralCommand;
+import frc.robot.commands.LaunchCoralCommand;
+import frc.robot.commands.MoveElevatorCommand;
+import frc.robot.commands.MoveLaunchAngleCommand;
+import frc.robot.commands.MoveLauncherToIntakePosition;
+import frc.robot.commands.MoveLauncherToLaunchPosition;
+import frc.robot.generated.Telemetry;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.ClimberAssist;
@@ -68,8 +73,9 @@ public class RobotContainer {
   private final CommandXboxController m_pilotController =
       new CommandXboxController(RobotMap.PilotControllerConstants.PILOT_CONTROLLER_USB_PORT);
 
-  private final CommandXboxController m_copilotController =
-      new CommandXboxController(RobotMap.CopilotControllerConstants.COPILOT_CONTROLLER_USB_PORT);
+  private final CopilotGamePad m_copilotController =
+      new CopilotGamePad(RobotMap.CopilotControllerConstants.COPILOT_CONTROLLER_USB_PORT);
+
   /* Path follower */
   private final SendableChooser<Command> autoChooser;
 
@@ -85,6 +91,8 @@ public class RobotContainer {
   private void registerNamedCommands() {}
 
   private void configureBindings() {
+
+    // Set the default command for the drivetrain to be field-centric driving
     // Note that X is defined as forward according to WPILib convention,
     // and Y is defined as to the left according to WPILib convention.
     m_drivetrain.setDefaultCommand(
@@ -103,6 +111,7 @@ public class RobotContainer {
                             * MaxAngularRate) // Drive counterclockwise with negative X (left)
             ));
 
+    // Set the other key bindings for the pilot controller
     m_pilotController.a().whileTrue(m_drivetrain.applyRequest(() -> brake));
     m_pilotController
         .b()
@@ -137,48 +146,65 @@ public class RobotContainer {
         .leftBumper()
         .onTrue(m_drivetrain.runOnce(() -> m_drivetrain.seedFieldCentric()));
 
+    // Set the key bindings for the copilot controller
+    m_copilotController
+        .getClimberAssistExtend()
+        .whileTrue(new ClimbInitialCommand(m_climberAssist));
+
+    m_copilotController.getClimberClimb().whileTrue(new ClimbCommand(m_climber));
+
+    m_copilotController.getLauncherIntake().whileTrue(new IntakeCoralCommand(m_launcher));
+    m_copilotController.getLauncherScore().whileTrue(new LaunchCoralCommand(m_launcher));
+
+    m_copilotController
+        .getManualLauncherDown()
+        .whileTrue(
+            new MoveLaunchAngleCommand(
+                m_launchAngle, -RobotMap.AngleMotorConstants.MANUAL_ANGLE_POWER));
+    m_copilotController
+        .getManualLauncherUp()
+        .whileTrue(
+            new MoveLaunchAngleCommand(
+                m_launchAngle, RobotMap.AngleMotorConstants.MANUAL_ANGLE_POWER));
+
+    m_copilotController
+        .getElevatorIntake()
+        .whileTrue(new MoveLauncherToIntakePosition(m_launchAngle, m_elevator));
+
+    m_copilotController
+        .getElevatorL1()
+        .whileTrue(
+            new MoveLauncherToLaunchPosition(
+                m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L1_SCORE_HEIGHT));
+    m_copilotController
+        .getElevatorL2()
+        .whileTrue(
+            new MoveLauncherToLaunchPosition(
+                m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L2_SCORE_HEIGHT));
+    m_copilotController
+        .getElevatorL3()
+        .whileTrue(
+            new MoveLauncherToLaunchPosition(
+                m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L3_SCORE_HEIGHT));
+    m_copilotController
+        .getElevatorL4()
+        .whileTrue(
+            new MoveLauncherToLaunchPosition(
+                m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L4_SCORE_HEIGHT));
+
+    m_copilotController.getLeftReef().whileTrue(new DriveToLeftBranch(m_drivetrain));
+    m_copilotController.getRightReef().whileTrue(new DriveToRightBranch(m_drivetrain));
+
+    m_copilotController
+        .getManualElevatorDown()
+        .whileTrue(
+            new MoveElevatorCommand(m_elevator, -RobotMap.ElevatorConstants.MANUAL_ELEVATOR_POWER));
+    m_copilotController
+        .getManualElevatorUp()
+        .whileTrue(
+            new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.MANUAL_ELEVATOR_POWER));
+
     m_drivetrain.registerTelemetry(logger::telemeterize);
-
-    m_copilotController
-        .leftBumper()
-        .onTrue(new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.STARTING_HEIGHT));
-    m_copilotController
-        .y()
-        .onTrue(new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.INTAKE_HEIGHT));
-    m_copilotController
-        .a()
-        .onTrue(new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.L1_SCORE_HEIGHT));
-    m_copilotController
-        .b()
-        .onTrue(new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.L2_SCORE_HEIGHT));
-    m_copilotController
-        .x()
-        .onTrue(new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.L4_SCORE_HEIGHT));
-
-    m_copilotController
-        .rightBumper()
-        .onTrue(
-            new MoveClimberToPositionCommand(
-                m_climber, RobotMap.ClimberConstants.CLIMBER_TRAVEL_DISTANCE));
-
-    m_copilotController
-        .povDown()
-        .onTrue(
-            new MoveClimberAssistToPositionCommand(
-                m_climberAssist, RobotMap.ClimberAssistConstants.CLIMBER_ASSIST_TRAVEL_DISTANCE));
-
-    m_copilotController
-        .rightTrigger()
-        .onTrue(
-            new SetLaunchAngleCommand(m_launchAngle, RobotMap.AngleMotorConstants.ANGLE_AT_INTAKE));
-    m_copilotController
-        .leftTrigger()
-        .onTrue(
-            new SetLaunchAngleCommand(m_launchAngle, RobotMap.AngleMotorConstants.ANGLE_AT_LAUNCH));
-
-    m_copilotController.povLeft().whileTrue(new LaunchCoralCommand(m_launcher));
-
-    m_copilotController.povRight().onTrue(new IntakeCoralCommand(m_launcher));
   }
 
   public Command getAutonomousCommand() {

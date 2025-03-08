@@ -5,6 +5,7 @@ import static edu.wpi.first.units.Units.Volts;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -103,6 +104,17 @@ public class Elevator implements Subsystem {
    */
   public void stopElevator() {
     m_elevatorMotor.set(0);
+  }
+
+  /**
+   * @see frc.robot.subsystems.Elevator
+   *     <p>Sets the speed to the given power.
+   * @param power percent power to send to elevator motor
+   * @return returns nothing
+   */
+  public void moveElevator(double power) {
+    DutyCycleOut mypower = new DutyCycleOut(0.0);
+    m_elevatorMotor.setControl(mypower.withOutput(power));
   }
 
   /**

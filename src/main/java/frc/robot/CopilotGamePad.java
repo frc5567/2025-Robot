@@ -27,20 +27,18 @@ public class CopilotGamePad extends CommandGenericHID {
    * <p>
    */
   public enum GamePadControls {
-    Elevator_Start(1),
-    Elevator_L1(2),
-    Elevator_L2(3),
-    Elevator_L3(4),
-    Elevator_L4(5),
-    Elevator_Intake(6),
-    Left_Reef(7),
-    Right_Reef(8),
-    Launcher_IntakePosition(9),
-    Launcher_ScorePosition(10),
-    Launcher_Intake(11),
-    Launcher_Score(12),
-    Climber_Climb(13),
-    Climber_Assist_Extend(14);
+    Climber_Assist_Extend(1),
+    Climber_Climb(2),
+    Elevator_Intake(3),
+    Elevator_L1(4),
+    Elevator_L2(5),
+    Elevator_L3(6),
+    Elevator_L4(7),
+    Left_Reef(8),
+    Manual_Elevator_Down(9),
+    Manual_Elevator_Up(10),
+    Right_Reef(11),
+    Launcher_Down(12);
 
     public final int portNum;
 
@@ -50,12 +48,27 @@ public class CopilotGamePad extends CommandGenericHID {
   }
 
   /**
-   * Checks if the Elevator Start Position button is pressed.
+   * Checks if the Manual Elevator Up button is pressed.
    *
-   * @return true if the Elevator Start Position button was pressed, false if not.
+   * @return true if the Manual Elevator Up button was pressed, false if not.
    */
-  public Trigger getElevatorStart() {
-    Trigger theButton = button(GamePadControls.Elevator_Start.portNum);
+  public Trigger getManualElevatorUp() {
+    Trigger theButton = button(GamePadControls.Manual_Elevator_Up.portNum);
+    System.out.println(
+        "Manual Elevator Up Button: [" + GamePadControls.Manual_Elevator_Up.portNum + "]");
+
+    return theButton;
+  }
+
+  /**
+   * Checks if the Manual Elevator Down button is pressed.
+   *
+   * @return true if the Manual Elevator Down button was pressed, false if not.
+   */
+  public Trigger getManualElevatorDown() {
+    Trigger theButton = button(GamePadControls.Manual_Elevator_Down.portNum);
+    System.out.println(
+        "Manual Elevator Down Button: [" + GamePadControls.Manual_Elevator_Down.portNum + "]");
     return theButton;
   }
 
@@ -66,6 +79,7 @@ public class CopilotGamePad extends CommandGenericHID {
    */
   public Trigger getElevatorL1() {
     Trigger theButton = button(GamePadControls.Elevator_L1.portNum);
+    System.out.println("Elevator L1 Button: [" + GamePadControls.Elevator_L1.portNum + "]");
     return theButton;
   }
 
@@ -76,6 +90,7 @@ public class CopilotGamePad extends CommandGenericHID {
    */
   public Trigger getElevatorL2() {
     Trigger theButton = button(GamePadControls.Elevator_L2.portNum);
+    System.out.println("Elevator L2 Button: [" + GamePadControls.Elevator_L2.portNum + "]");
     return theButton;
   }
 
@@ -86,6 +101,7 @@ public class CopilotGamePad extends CommandGenericHID {
    */
   public Trigger getElevatorL3() {
     Trigger theButton = button(GamePadControls.Elevator_L3.portNum);
+    System.out.println("Elevator L3 Button: [" + GamePadControls.Elevator_L3.portNum + "]");
     return theButton;
   }
 
@@ -96,6 +112,7 @@ public class CopilotGamePad extends CommandGenericHID {
    */
   public Trigger getElevatorL4() {
     Trigger theButton = button(GamePadControls.Elevator_L4.portNum);
+    System.out.println("Elevator L4 Button: [" + GamePadControls.Elevator_L4.portNum + "]");
     return theButton;
   }
 
@@ -106,6 +123,7 @@ public class CopilotGamePad extends CommandGenericHID {
    */
   public Trigger getElevatorIntake() {
     Trigger theButton = button(GamePadControls.Elevator_Intake.portNum);
+    System.out.println("Elevator Intake Button: [" + GamePadControls.Elevator_Intake.portNum + "]");
     return theButton;
   }
 
@@ -116,6 +134,7 @@ public class CopilotGamePad extends CommandGenericHID {
    */
   public Trigger getLeftReef() {
     Trigger theButton = button(GamePadControls.Left_Reef.portNum);
+    System.out.println("Left Reef Button: [" + GamePadControls.Left_Reef.portNum + "]");
     return theButton;
   }
 
@@ -126,26 +145,29 @@ public class CopilotGamePad extends CommandGenericHID {
    */
   public Trigger getRightReef() {
     Trigger theButton = button(GamePadControls.Right_Reef.portNum);
+    System.out.println("Right Reef Button: [" + GamePadControls.Right_Reef.portNum + "]");
     return theButton;
   }
 
   /**
-   * Checks if the Launcher Intake Position button is pressed.
+   * Checks if the Launcher Up button is pressed.
    *
-   * @return true if the Launcher Intake Position button was pressed, false if not.
+   * @return true if the Launcher Up button was pressed, false if not.
    */
-  public Trigger getLauncherIntakePosition() {
-    Trigger theButton = button(GamePadControls.Launcher_IntakePosition.portNum);
+  public Trigger getManualLauncherUp() {
+    Trigger theButton = axisGreaterThan(1, 0.5);
+    System.out.println("Launcher Up Button: 1 axis less than 0");
     return theButton;
   }
 
   /**
-   * Checks if the Launcher Score Position button is pressed.
+   * Checks if the Launcher Down Position button is pressed.
    *
-   * @return true if the Launcher Score Position button was pressed, false if not.
+   * @return true if the Launcher Down Position button was pressed, false if not.
    */
-  public Trigger getLauncherScorePosiotion() {
-    Trigger theButton = button(GamePadControls.Launcher_ScorePosition.portNum);
+  public Trigger getManualLauncherDown() {
+    Trigger theButton = button(GamePadControls.Launcher_Down.portNum);
+    System.out.println("Launcher Down Button: [" + GamePadControls.Launcher_Down.portNum + "]");
     return theButton;
   }
 
@@ -155,7 +177,8 @@ public class CopilotGamePad extends CommandGenericHID {
    * @return true if the Launcher Intake button was pressed, false if not.
    */
   public Trigger getLauncherIntake() {
-    Trigger theButton = button(GamePadControls.Launcher_Intake.portNum);
+    Trigger theButton = axisLessThan(0, -0.5);
+    System.out.println("Launcher Intake Button: axis 0 less than 0");
     return theButton;
   }
 
@@ -165,7 +188,8 @@ public class CopilotGamePad extends CommandGenericHID {
    * @return true if the Launcher Score button was pressed, false if not.
    */
   public Trigger getLauncherScore() {
-    Trigger theButton = button(GamePadControls.Launcher_Score.portNum);
+    Trigger theButton = axisGreaterThan(0, 0.5);
+    System.out.println("Launcher Score Button: axis 0 greater than 0");
     return theButton;
   }
 
@@ -176,6 +200,7 @@ public class CopilotGamePad extends CommandGenericHID {
    */
   public Trigger getClimberClimb() {
     Trigger theButton = button(GamePadControls.Climber_Climb.portNum);
+    System.out.println("Climber Climb Button: [" + GamePadControls.Climber_Climb.portNum + "]");
     return theButton;
   }
 
@@ -186,6 +211,8 @@ public class CopilotGamePad extends CommandGenericHID {
    */
   public Trigger getClimberAssistExtend() {
     Trigger theButton = button(GamePadControls.Climber_Assist_Extend.portNum);
+    System.out.println(
+        "Climber Assist Extend Button: [" + GamePadControls.Climber_Assist_Extend.portNum + "]");
     return theButton;
   }
 }

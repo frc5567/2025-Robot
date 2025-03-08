@@ -5,6 +5,7 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -92,5 +93,15 @@ public class LaunchAngle implements Subsystem {
    */
   public void setBrakeMode(NeutralModeValue mode) {
     m_angleMotor.setNeutralMode(mode);
+  }
+
+  /**
+   * Sets the angle motor to a certain power.
+   *
+   * @param power the power to set the motor to.
+   */
+  public void moveLaunchAngle(double power) {
+    DutyCycleOut mypower = new DutyCycleOut(0.0);
+    m_angleMotor.setControl(mypower.withOutput(power));
   }
 }

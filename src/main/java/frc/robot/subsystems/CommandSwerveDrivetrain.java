@@ -11,6 +11,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.PathConstraints;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -23,7 +24,9 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.RobotMap;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -317,5 +320,53 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
       Matrix<N3, N1> visionMeasurementStdDevs) {
     super.addVisionMeasurement(
         visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds), visionMeasurementStdDevs);
+  }
+
+  /**
+   * Use PathPlanner Path finding to go to a point on the field.
+   *
+   * @param pose Target {@link Pose2d} to go to.
+   * @return PathFinding command
+   */
+  public Command driveToPose(Pose2d pose) {
+
+    // Create the constraints to use while pathfinding
+    PathConstraints constraints =
+        new PathConstraints(
+            RobotMap.DriveTrainConstants.MAX_SPEED / 2,
+            4.0,
+            RobotMap.DriveTrainConstants.MAX_ANGULAR_RATE,
+            (720 * Math.PI / 180.0));
+
+    // Since AutoBuilder is configured, we can use it to build pathfinding commands
+    Command returnCommand;
+
+    if (pose != null) {
+      returnCommand =
+          AutoBuilder.pathfindToPose(
+              pose,
+              constraints,
+              edu.wpi.first.units.Units.MetersPerSecond.of(0) // Goal end velocity in meters/sec
+              );
+    } else {
+      System.out.println("Failed to create the command, no pose");
+      returnCommand = this.getDefaultCommand();
+    }
+    return returnCommand;
+  }
+
+  /**
+   * Returns the current pose of the robot.
+   *
+   * @return The current pose of the robot.
+   */
+  public Pose2d getPose() {
+    double curTime = Utils.getCurrentTimeSeconds();
+    Pose2d curPose2d = new Pose2d();
+    Optional<Pose2d> curPose = samplePoseAt(curTime);
+    if (curPose.isPresent()) {
+      curPose2d = curPose.get();
+    }
+    return curPose2d;
   }
 }
