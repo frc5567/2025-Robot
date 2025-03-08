@@ -288,17 +288,17 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     m_simNotifier.startPeriodic(kSimLoopPeriod);
   }
 
-  /**
-   * Adds a vision measurement to the Kalman Filter. This will correct the odometry pose estimate
-   * while still accounting for measurement noise.
-   *
-   * @param visionRobotPoseMeters The pose of the robot as measured by the vision camera.
-   * @param timestampSeconds The timestamp of the vision measurement in seconds.
-   */
-  @Override
-  public void addVisionMeasurement(Pose2d visionRobotPoseMeters, double timestampSeconds) {
-    super.addVisionMeasurement(visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds));
-  }
+  // /**
+  //  * Adds a vision measurement to the Kalman Filter. This will correct the odometry pose estimate
+  //  * while still accounting for measurement noise.
+  //  *
+  //  * @param visionRobotPoseMeters The pose of the robot as measured by the vision camera.
+  //  * @param timestampSeconds The timestamp of the vision measurement in seconds.
+  //  */
+  // @Override
+  // public void addVisionMeasurement(Pose2d visionRobotPoseMeters, double timestampSeconds) {
+  //   super.addVisionMeasurement(visionRobotPoseMeters, Utils.fpgaToCurrentTime(timestampSeconds));
+  // }
 
   /**
    * Adds a vision measurement to the Kalman Filter. This will correct the odometry pose estimate
@@ -333,9 +333,9 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     // Create the constraints to use while pathfinding
     PathConstraints constraints =
         new PathConstraints(
-            RobotMap.DriveTrainConstants.MAX_SPEED / 2,
+            RobotMap.DriveTrainConstants.MAX_SPEED / 4,
             4.0,
-            RobotMap.DriveTrainConstants.MAX_ANGULAR_RATE,
+            RobotMap.DriveTrainConstants.MAX_ANGULAR_RATE / 3,
             (720 * Math.PI / 180.0));
 
     // Since AutoBuilder is configured, we can use it to build pathfinding commands

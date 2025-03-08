@@ -13,37 +13,40 @@ public class RobotMap {
     // Allows us to identify the elevator motor.
     public static final int ELEVATOR_MOTOR_CAN_ID = 29;
 
-    // TODO: Figure out the actual distance traveled (in mm) per one rotation of the elevator motor.
-    public static final double MM_PER_ROTATION = 8.4;
+    /**
+     * Sprocket has 2.638 inch diameter (so multiplied by pi) 8.2875 inches circumference. That
+     * converts to 210.5mm per rotation of lower stage. Total travel of scoring mechanism is double
+     * that at 411mm per rotation (since both stages move together and proportionally the same
+     * distance) Gear Ratio is 50:1 411 / 50 = 8.22mm of travel per rotation of motor
+     */
+    public static final double MM_PER_ROTATION = 8.22;
 
     // TODO: Figure out the actual margin of error we want (in mm).
     public static final double ELEVATOR_MARGIN_OF_ERROR = 10.0;
-
-    // TODO: Figure out the actual max number of rotations for the elevator motor.
-    public static final double ELEVATOR_MOTOR_MAX_ROTATIONS = 5.0;
 
     // TODO: Figure out the correct starting height in mm.
     public static final double STARTING_HEIGHT = 0.0;
 
     // TODO: Figure out the correct height in mm needed for intake.
-    public static final double INTAKE_HEIGHT = 500.0;
+    public static final double INTAKE_HEIGHT = 100.0;
 
     // TODO: Figure out correct height in mm needed for level 1.
-    public static final double L1_SCORE_HEIGHT = 300.0;
+    public static final double L1_SCORE_HEIGHT = 50.0;
 
     // TODO: Figure out correct height in mm needed for level 2.
-    public static final double L2_SCORE_HEIGHT = 600.0;
+    public static final double L2_SCORE_HEIGHT = 150.0;
 
     // TODO: Figure out correct height in mm needed for level 3.
-    public static final double L3_SCORE_HEIGHT = 900.0;
+    public static final double L3_SCORE_HEIGHT = 550.0;
 
     // TODO: Figure out correct height in mm needed for level 4 or if we are even going for level 4.
-    public static final double L4_SCORE_HEIGHT = 1200.0;
+    public static final double L4_SCORE_HEIGHT = 1175.0;
+
     // Found offset using pheonix tuner subtracting, in mm.
-    public static final double OFFSET = 11.0;
+    public static final double OFFSET = 0.438477;
 
     // TODO: Tune this to be reasonable for the drive team.
-    public static final double MANUAL_ELEVATOR_POWER = 0.25;
+    public static final double MANUAL_ELEVATOR_POWER = 0.15;
   }
 
   public static final class LauncherConstants {
@@ -71,6 +74,10 @@ public class RobotMap {
   public static final class AngleMotorConstants {
     // Allows us to identify the Angle motor.
     public static final int LAUNCH_ANGLE_MOTOR_CAN_ID = 31;
+
+    // Limit switch to zero out the encoder on the LaunchAngle system
+    public static final int LAUNCHER_LIMIT_SWITCH_DIO_PORT = 8;
+
     // TODO: find correct value of tolerance in degrees.
     public static final double ANGLE_TOLERANCE = 0.25;
     // TODO: find correct angle of movement in degrees.
@@ -78,17 +85,19 @@ public class RobotMap {
     // TODO: Adjust angle if needed.
     public static final double ANGLE_AT_INTAKE = 7.5;
     // offset found by mesuring through pheonix tuner in rotations.
-    public static final double OFFSET = -0.051270;
+    public static final double OFFSET = -0.045410;
 
     // TODO: Tune this to be reasonable for the drive team.
-    public static final double MANUAL_ANGLE_POWER = 0.25;
+    public static final double MANUAL_ANGLE_POWER = 0.15;
   }
 
   public static final class ClimberConstants {
+
     // Allows us to identify the climber motor.
     public static final int CLIMBER_MOTOR_CAN_ID = 30;
+
     // TODO: find correct margin of error rotations.
-    public static final double CLIMBER_MARGIN_OF_ERROR = 2.0;
+    public static final double CLIMBER_MARGIN_OF_ERROR = 0.5;
 
     /** 40:1 gear ratio and 2.25 rotations of the output shaft for complete travel. */
     public static final double CLIMBER_TRAVEL_DISTANCE = 90.0;
@@ -131,6 +140,8 @@ public class RobotMap {
 
     // 3/4 of a rotation per second max angular velocity
     public static final double MAX_ANGULAR_RATE = RotationsPerSecond.of(0.75).in(RadiansPerSecond);
+
+    public static final double DRIVE_SCALAR = 0.7;
   }
 
   /**
@@ -269,7 +280,7 @@ public class RobotMap {
       public static final Transform3d LEFT_BRANCH =
           new Transform3d(
               Inches.of(0.0),
-              Inches.of(-7.5),
+              Inches.of(-4.0),
               Inches.of(0.0),
               new Rotation3d(Degrees.of(0.0), Degrees.of(0.0), Degrees.of(0.0)));
 
@@ -281,7 +292,7 @@ public class RobotMap {
       public static final Transform3d RIGHT_BRANCH =
           new Transform3d(
               Inches.of(0.0),
-              Inches.of(5.5),
+              Inches.of(7.0),
               Inches.of(0.0),
               new Rotation3d(Degrees.of(0.0), Degrees.of(0.0), Degrees.of(0.0)));
 
@@ -294,7 +305,7 @@ public class RobotMap {
        */
       public static final Transform3d ROBOT_TRANSFORM =
           new Transform3d(
-              Inches.of(13.0),
+              Inches.of(16.0),
               Inches.of(0.0),
               Inches.of(0.0),
               new Rotation3d(Degrees.of(0.0), Degrees.of(0.0), Degrees.of(180.0)));

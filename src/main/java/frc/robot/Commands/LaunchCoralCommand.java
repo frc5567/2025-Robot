@@ -14,6 +14,7 @@ public class LaunchCoralCommand extends Command {
   // create a representation of the launcher
 
   private final Launcher m_launcherSubsystem;
+  private int m_launchCounter;
 
   /**
    * Constructor of the LaunchCoralCommand class
@@ -22,6 +23,8 @@ public class LaunchCoralCommand extends Command {
    */
   public LaunchCoralCommand(Launcher launcherSubsystem) {
     m_launcherSubsystem = launcherSubsystem;
+    m_launchCounter = 0;
+    addRequirements(m_launcherSubsystem);
   }
 
   /**
@@ -40,6 +43,7 @@ public class LaunchCoralCommand extends Command {
   @Override
   public void execute() {
     m_launcherSubsystem.setLauncherSpeed(LauncherConstants.LAUNCHER_SPEED);
+    m_launchCounter++;
   }
 
   /**
@@ -49,6 +53,9 @@ public class LaunchCoralCommand extends Command {
    */
   @Override
   public boolean isFinished() {
+    if (m_launchCounter > 5) {
+      return true;
+    }
     return false;
   }
 

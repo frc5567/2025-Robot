@@ -110,6 +110,8 @@ public class TargetPoseHelper {
 
   private static double CalcDistanceToAprilTag(
       RobotMap.FieldConstants.TAG_IDS tag, Pose2d currentPose) {
+
+    System.out.println("CalcDistanceToAprilTag: [" + tag.getValue() + "]");
     // Get the Pose of the tag we're focused on
     Optional<Pose3d> curTagPose = m_fieldLayout.getTagPose(tag.getValue());
 

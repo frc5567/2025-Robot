@@ -9,7 +9,8 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
-import edu.wpi.first.math.geometry.Rotation2d;
+import com.pathplanner.lib.auto.NamedCommands;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,6 +28,7 @@ import frc.robot.commands.MoveLauncherToIntakePosition;
 import frc.robot.commands.MoveLauncherToLaunchPosition;
 import frc.robot.generated.Telemetry;
 import frc.robot.generated.TunerConstants;
+import frc.robot.helpers.TargetPoseHelper;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.ClimberAssist;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -76,19 +78,38 @@ public class RobotContainer {
   private final CopilotGamePad m_copilotController =
       new CopilotGamePad(RobotMap.CopilotControllerConstants.COPILOT_CONTROLLER_USB_PORT);
 
+  public final TargetPoseHelper m_poseHelper = new TargetPoseHelper();
+
   /* Path follower */
   private final SendableChooser<Command> autoChooser;
+
+  private Alliance m_allianceColor;
 
   public RobotContainer() {
     registerNamedCommands();
 
     autoChooser = AutoBuilder.buildAutoChooser("Tests");
     SmartDashboard.putData("Auto Mode", autoChooser);
-
+    m_allianceColor = Alliance.Red;
     configureBindings();
   }
 
-  private void registerNamedCommands() {}
+  private void registerNamedCommands() {
+    NamedCommands.registerCommand(
+        "MoveLauncherToL4",
+        new MoveLauncherToLaunchPosition(
+            m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L4_SCORE_HEIGHT));
+    NamedCommands.registerCommand("ScoreCoral", new LaunchCoralCommand(m_launcher));
+    NamedCommands.registerCommand(
+        "MoveLauncherIntake",
+        new MoveLauncherToIntakePosition(m_launchAngle, m_elevator));
+  }
+
+  public void setAllianceColor(Alliance color) {
+    if (color != m_allianceColor) {
+      m_allianceColor = color;
+    }
+  }
 
   private void configureBindings() {
 
@@ -102,10 +123,14 @@ public class RobotContainer {
                 drive
                     .withVelocityX(
                         -m_pilotController.getLeftY()
-                            * MaxSpeed) // Drive forward with negative Y (forward)
+                            * MaxSpeed
+                            * RobotMap.DriveTrainConstants
+                                .DRIVE_SCALAR) // Drive forward with negative Y (forward)
                     .withVelocityY(
                         -m_pilotController.getLeftX()
-                            * MaxSpeed) // Drive left with negative X (left)
+                            * MaxSpeed
+                            * RobotMap.DriveTrainConstants
+                                .DRIVE_SCALAR) // Drive left with negative X (left)
                     .withRotationalRate(
                         -m_pilotController.getRightX()
                             * MaxAngularRate) // Drive counterclockwise with negative X (left)
@@ -114,13 +139,28 @@ public class RobotContainer {
     // Set the other key bindings for the pilot controller
     m_pilotController.a().whileTrue(m_drivetrain.applyRequest(() -> brake));
     m_pilotController
-        .b()
+        .rightTrigger(0.5)
         .whileTrue(
             m_drivetrain.applyRequest(
                 () ->
-                    point.withModuleDirection(
-                        new Rotation2d(
-                            -m_pilotController.getLeftY(), -m_pilotController.getLeftX()))));
+                    drive
+                        .withVelocityX(
+                            -m_pilotController.getLeftY()
+                                * MaxSpeed
+                                / 3
+                                * RobotMap.DriveTrainConstants
+                                    .DRIVE_SCALAR) // Drive forward with negative Y (forward)
+                        .withVelocityY(
+                            -m_pilotController.getLeftX()
+                                * MaxSpeed
+                                / 3
+                                * RobotMap.DriveTrainConstants
+                                    .DRIVE_SCALAR) // Drive left with negative X (left)
+                        .withRotationalRate(
+                            -m_pilotController.getRightX()
+                                * MaxAngularRate
+                                / 3) // Drive counterclockwise with negative X (left)
+                ));
 
     // Run SysId routines when holding back/start and X/Y.
     // Note that each routine should be run exactly once in a single log.
@@ -160,12 +200,12 @@ public class RobotContainer {
         .getManualLauncherDown()
         .whileTrue(
             new MoveLaunchAngleCommand(
-                m_launchAngle, -RobotMap.AngleMotorConstants.MANUAL_ANGLE_POWER));
+                m_launchAngle, RobotMap.AngleMotorConstants.MANUAL_ANGLE_POWER));
     m_copilotController
         .getManualLauncherUp()
         .whileTrue(
             new MoveLaunchAngleCommand(
-                m_launchAngle, RobotMap.AngleMotorConstants.MANUAL_ANGLE_POWER));
+                m_launchAngle, -RobotMap.AngleMotorConstants.MANUAL_ANGLE_POWER));
 
     m_copilotController
         .getElevatorIntake()
