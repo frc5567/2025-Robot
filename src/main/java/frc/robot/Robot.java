@@ -15,7 +15,8 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.LimelightHelpers.PoseEstimate;
+import frc.robot.helpers.LimelightHelpers;
+import frc.robot.helpers.LimelightHelpers.PoseEstimate;
 import java.util.Optional;
 
 public class Robot extends TimedRobot {
@@ -51,9 +52,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
     m_outputCounter++;
-    if (m_outputCounter >= 50) {
-      m_outputCounter = 0;
-    }
+
     /*
      * This example of adding Limelight is very simple and may not be sufficient for on-field use.
      * Users typically need to provide a standard deviation that scales with the distance to target
@@ -64,24 +63,48 @@ public class Robot extends TimedRobot {
      */
     if (kUseLimelight) {
       m_alliance = DriverStation.getAlliance();
+
       if (m_alliance.isPresent()) {
+        m_robotContainer.setAllianceColor(m_alliance.get());
         if (m_alliance.get() == Alliance.Red) {
           m_curPoseEstimate = LimelightHelpers.getBotPoseEstimate_wpiRed("limelight");
         } else if (m_alliance.get() == Alliance.Blue) {
           m_curPoseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
         }
       }
-
       if ((m_curPoseEstimate != null)
           && !((m_curPoseEstimate.pose.getX() == 0) && (m_curPoseEstimate.pose.getY() == 0))) {
         m_robotContainer.m_drivetrain.addVisionMeasurement(
             m_curPoseEstimate.pose, Utils.fpgaToCurrentTime(m_curPoseEstimate.timestampSeconds));
+        if (m_outputCounter >= 50) {
+          System.out.println(
+              "Robot saw an AprilTag and tried to adjust pose ["
+                  + m_curPoseEstimate.pose.getX()
+                  + "]["
+                  + m_curPoseEstimate.pose.getX()
+                  + "]");
+        }
       }
     }
     double curTime = Utils.getCurrentTimeSeconds();
     Optional<Pose2d> curPose = m_robotContainer.m_drivetrain.samplePoseAt(curTime);
     if (curPose.isPresent()) {
       m_field.setRobotPose(curPose.get());
+      if (m_outputCounter >= 50) {
+        System.out.println(
+            "Robot pose [" + curPose.get().getX() + "][" + curPose.get().getX() + "]");
+      }
+    }
+
+    LimelightHelpers.getBotPose_TargetSpace("limelight");
+
+    // Make sure we zero the encoder on the launch angle if the limit switch is pressed
+    if (m_robotContainer.m_launchAngle.isLimitSwitchNewlyPressed()) {
+      m_robotContainer.m_launchAngle.zeroEncoder();
+    }
+
+    if (m_outputCounter >= 50) {
+      m_outputCounter = 0;
     }
   }
 

@@ -9,19 +9,26 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
-import edu.wpi.first.math.geometry.Rotation2d;
+import com.pathplanner.lib.auto.NamedCommands;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.Commands.IntakeCoralCommand;
-import frc.robot.Commands.LaunchCoralCommand;
-import frc.robot.Commands.MoveClimberAssistToPositionCommand;
-import frc.robot.Commands.MoveClimberToPositionCommand;
-import frc.robot.Commands.MoveElevatorCommand;
-import frc.robot.Commands.SetLaunchAngleCommand;
+import frc.robot.commands.ClimbCommand;
+import frc.robot.commands.ClimbInitialCommand;
+import frc.robot.commands.DriveToLeftBranch;
+import frc.robot.commands.DriveToRightBranch;
+import frc.robot.commands.IntakeCoralCommand;
+import frc.robot.commands.LaunchCoralCommand;
+import frc.robot.commands.MoveElevatorCommand;
+import frc.robot.commands.MoveLaunchAngleCommand;
+import frc.robot.commands.MoveLauncherToIntakePosition;
+import frc.robot.commands.MoveLauncherToLaunchPosition;
+import frc.robot.generated.Telemetry;
 import frc.robot.generated.TunerConstants;
+import frc.robot.helpers.TargetPoseHelper;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.ClimberAssist;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -68,23 +75,44 @@ public class RobotContainer {
   private final CommandXboxController m_pilotController =
       new CommandXboxController(RobotMap.PilotControllerConstants.PILOT_CONTROLLER_USB_PORT);
 
-  private final CommandXboxController m_copilotController =
-      new CommandXboxController(RobotMap.CopilotControllerConstants.COPILOT_CONTROLLER_USB_PORT);
+  private final CopilotGamePad m_copilotController =
+      new CopilotGamePad(RobotMap.CopilotControllerConstants.COPILOT_CONTROLLER_USB_PORT);
+
+  public final TargetPoseHelper m_poseHelper = new TargetPoseHelper();
+
   /* Path follower */
   private final SendableChooser<Command> autoChooser;
+
+  private Alliance m_allianceColor;
 
   public RobotContainer() {
     registerNamedCommands();
 
     autoChooser = AutoBuilder.buildAutoChooser("Tests");
     SmartDashboard.putData("Auto Mode", autoChooser);
-
+    m_allianceColor = Alliance.Red;
     configureBindings();
   }
 
-  private void registerNamedCommands() {}
+  private void registerNamedCommands() {
+    NamedCommands.registerCommand(
+        "MoveLauncherToL4",
+        new MoveLauncherToLaunchPosition(
+            m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L4_SCORE_HEIGHT));
+    NamedCommands.registerCommand("ScoreCoral", new LaunchCoralCommand(m_launcher));
+    NamedCommands.registerCommand(
+        "MoveLauncherIntake", new MoveLauncherToIntakePosition(m_launchAngle, m_elevator));
+  }
+
+  public void setAllianceColor(Alliance color) {
+    if (color != m_allianceColor) {
+      m_allianceColor = color;
+    }
+  }
 
   private void configureBindings() {
+
+    // Set the default command for the drivetrain to be field-centric driving
     // Note that X is defined as forward according to WPILib convention,
     // and Y is defined as to the left according to WPILib convention.
     m_drivetrain.setDefaultCommand(
@@ -94,24 +122,44 @@ public class RobotContainer {
                 drive
                     .withVelocityX(
                         -m_pilotController.getLeftY()
-                            * MaxSpeed) // Drive forward with negative Y (forward)
+                            * MaxSpeed
+                            * RobotMap.DriveTrainConstants
+                                .DRIVE_SCALAR) // Drive forward with negative Y (forward)
                     .withVelocityY(
                         -m_pilotController.getLeftX()
-                            * MaxSpeed) // Drive left with negative X (left)
+                            * MaxSpeed
+                            * RobotMap.DriveTrainConstants
+                                .DRIVE_SCALAR) // Drive left with negative X (left)
                     .withRotationalRate(
                         -m_pilotController.getRightX()
                             * MaxAngularRate) // Drive counterclockwise with negative X (left)
             ));
 
+    // Set the other key bindings for the pilot controller
     m_pilotController.a().whileTrue(m_drivetrain.applyRequest(() -> brake));
     m_pilotController
-        .b()
+        .rightTrigger(0.5)
         .whileTrue(
             m_drivetrain.applyRequest(
                 () ->
-                    point.withModuleDirection(
-                        new Rotation2d(
-                            -m_pilotController.getLeftY(), -m_pilotController.getLeftX()))));
+                    drive
+                        .withVelocityX(
+                            -m_pilotController.getLeftY()
+                                * MaxSpeed
+                                / 3
+                                * RobotMap.DriveTrainConstants
+                                    .DRIVE_SCALAR) // Drive forward with negative Y (forward)
+                        .withVelocityY(
+                            -m_pilotController.getLeftX()
+                                * MaxSpeed
+                                / 3
+                                * RobotMap.DriveTrainConstants
+                                    .DRIVE_SCALAR) // Drive left with negative X (left)
+                        .withRotationalRate(
+                            -m_pilotController.getRightX()
+                                * MaxAngularRate
+                                / 3) // Drive counterclockwise with negative X (left)
+                ));
 
     // Run SysId routines when holding back/start and X/Y.
     // Note that each routine should be run exactly once in a single log.
@@ -137,48 +185,65 @@ public class RobotContainer {
         .leftBumper()
         .onTrue(m_drivetrain.runOnce(() -> m_drivetrain.seedFieldCentric()));
 
+    // Set the key bindings for the copilot controller
+    m_copilotController
+        .getClimberAssistExtend()
+        .whileTrue(new ClimbInitialCommand(m_climberAssist));
+
+    m_copilotController.getClimberClimb().whileTrue(new ClimbCommand(m_climber));
+
+    m_copilotController.getLauncherIntake().whileTrue(new IntakeCoralCommand(m_launcher));
+    m_copilotController.getLauncherScore().whileTrue(new LaunchCoralCommand(m_launcher));
+
+    m_copilotController
+        .getManualLauncherDown()
+        .whileTrue(
+            new MoveLaunchAngleCommand(
+                m_launchAngle, RobotMap.AngleMotorConstants.MANUAL_ANGLE_POWER));
+    m_copilotController
+        .getManualLauncherUp()
+        .whileTrue(
+            new MoveLaunchAngleCommand(
+                m_launchAngle, -RobotMap.AngleMotorConstants.MANUAL_ANGLE_POWER));
+
+    m_copilotController
+        .getElevatorIntake()
+        .whileTrue(new MoveLauncherToIntakePosition(m_launchAngle, m_elevator));
+
+    m_copilotController
+        .getElevatorL1()
+        .whileTrue(
+            new MoveLauncherToLaunchPosition(
+                m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L1_SCORE_HEIGHT));
+    m_copilotController
+        .getElevatorL2()
+        .whileTrue(
+            new MoveLauncherToLaunchPosition(
+                m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L2_SCORE_HEIGHT));
+    m_copilotController
+        .getElevatorL3()
+        .whileTrue(
+            new MoveLauncherToLaunchPosition(
+                m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L3_SCORE_HEIGHT));
+    m_copilotController
+        .getElevatorL4()
+        .whileTrue(
+            new MoveLauncherToLaunchPosition(
+                m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L4_SCORE_HEIGHT));
+
+    m_copilotController.getLeftReef().whileTrue(new DriveToLeftBranch(m_drivetrain));
+    m_copilotController.getRightReef().whileTrue(new DriveToRightBranch(m_drivetrain));
+
+    m_copilotController
+        .getManualElevatorDown()
+        .whileTrue(
+            new MoveElevatorCommand(m_elevator, -RobotMap.ElevatorConstants.MANUAL_ELEVATOR_POWER));
+    m_copilotController
+        .getManualElevatorUp()
+        .whileTrue(
+            new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.MANUAL_ELEVATOR_POWER));
+
     m_drivetrain.registerTelemetry(logger::telemeterize);
-
-    m_copilotController
-        .leftBumper()
-        .onTrue(new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.STARTING_HEIGHT));
-    m_copilotController
-        .y()
-        .onTrue(new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.INTAKE_HEIGHT));
-    m_copilotController
-        .a()
-        .onTrue(new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.L1_SCORE_HEIGHT));
-    m_copilotController
-        .b()
-        .onTrue(new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.L2_SCORE_HEIGHT));
-    m_copilotController
-        .x()
-        .onTrue(new MoveElevatorCommand(m_elevator, RobotMap.ElevatorConstants.L4_SCORE_HEIGHT));
-
-    m_copilotController
-        .rightBumper()
-        .onTrue(
-            new MoveClimberToPositionCommand(
-                m_climber, RobotMap.ClimberConstants.CLIMBER_TRAVEL_DISTANCE));
-
-    m_copilotController
-        .povDown()
-        .onTrue(
-            new MoveClimberAssistToPositionCommand(
-                m_climberAssist, RobotMap.ClimberAssistConstants.CLIMBER_ASSIST_TRAVEL_DISTANCE));
-
-    m_copilotController
-        .rightTrigger()
-        .onTrue(
-            new SetLaunchAngleCommand(m_launchAngle, RobotMap.AngleMotorConstants.ANGLE_AT_INTAKE));
-    m_copilotController
-        .leftTrigger()
-        .onTrue(
-            new SetLaunchAngleCommand(m_launchAngle, RobotMap.AngleMotorConstants.ANGLE_AT_LAUNCH));
-
-    m_copilotController.povLeft().whileTrue(new LaunchCoralCommand(m_launcher));
-
-    m_copilotController.povRight().onTrue(new IntakeCoralCommand(m_launcher));
   }
 
   public Command getAutonomousCommand() {

@@ -5,7 +5,9 @@ import static edu.wpi.first.units.Units.Volts;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -24,6 +26,7 @@ public class Elevator implements Subsystem {
   private TalonFX m_elevatorMotor;
 
   private final MotionMagicVoltage m_motionMagicVoltage = new MotionMagicVoltage(0).withSlot(0);
+  private final PositionVoltage m_positionVoltage = new PositionVoltage(0).withSlot(0);
 
   /**
    * Elevator gains for default slot 0. Note that these values were not tuned and are just
@@ -48,7 +51,7 @@ public class Elevator implements Subsystem {
     m_elevatorMotor = new TalonFX(motorPort);
 
     TalonFXConfiguration configs = new TalonFXConfiguration();
-    configs.Voltage.withPeakForwardVoltage(Volts.of(8)).withPeakReverseVoltage(Volts.of(-8));
+    configs.Voltage.withPeakForwardVoltage(Volts.of(12)).withPeakReverseVoltage(Volts.of(-12));
     configs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     var motionMagicConfigs = configs.MotionMagic;
     motionMagicConfigs.MotionMagicCruiseVelocity = 80; // Target cruise velocity of 80 rps
@@ -56,6 +59,10 @@ public class Elevator implements Subsystem {
         160; // Target acceleration of 160 rps/s (0.5 seconds)
     motionMagicConfigs.MotionMagicJerk = 1600; // Target jerk of 1600 rps/s/s (0.1 seconds)
     configs.withSlot0(elevatorGains);
+    m_elevatorMotor.getConfigurator().apply(configs);
+
+    // Zero out the encoder to start off. Assumes the elevator is at the bottom.
+    m_elevatorMotor.setPosition(0.0);
   }
 
   /**
@@ -90,7 +97,9 @@ public class Elevator implements Subsystem {
 
     // Convert desired position to distance in mm.
     double targetRotations = position / RobotMap.ElevatorConstants.MM_PER_ROTATION;
-    m_elevatorMotor.setControl(m_motionMagicVoltage.withPosition(targetRotations));
+    targetRotations = targetRotations - RobotMap.ElevatorConstants.OFFSET; // Offset the position
+    // m_elevatorMotor.setControl(m_motionMagicVoltage.withPosition(targetRotations));
+    m_elevatorMotor.setControl(m_positionVoltage.withPosition(targetRotations));
     double curPos = getElevatorPosition();
     System.out.println(
         "Attempting to move to position (" + position + ") Currently at (" + curPos + ")");
@@ -103,6 +112,17 @@ public class Elevator implements Subsystem {
    */
   public void stopElevator() {
     m_elevatorMotor.set(0);
+  }
+
+  /**
+   * @see frc.robot.subsystems.Elevator
+   *     <p>Sets the speed to the given power.
+   * @param power percent power to send to elevator motor
+   * @return returns nothing
+   */
+  public void moveElevator(double power) {
+    DutyCycleOut mypower = new DutyCycleOut(0.0);
+    m_elevatorMotor.setControl(mypower.withOutput(power));
   }
 
   /**

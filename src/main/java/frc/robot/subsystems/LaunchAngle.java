@@ -5,12 +5,14 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.RobotMap;
 
@@ -21,6 +23,11 @@ import frc.robot.RobotMap;
 public class LaunchAngle implements Subsystem {
 
   private final MotionMagicVoltage m_motionMagicVoltage = new MotionMagicVoltage(0).withSlot(0);
+
+  private final DigitalInput m_limitSwitch =
+      new DigitalInput(RobotMap.AngleMotorConstants.LAUNCHER_LIMIT_SWITCH_DIO_PORT);
+
+  private boolean m_isLimitSwitchPressed = false;
 
   // TODO: Must measure and tune these values, preferably under load!
   private static final Slot0Configs launcherAngleGains =
@@ -44,7 +51,7 @@ public class LaunchAngle implements Subsystem {
     m_angleMotor = new TalonFX(motorPort);
     TalonFXConfiguration configs = new TalonFXConfiguration();
     configs.Voltage.withPeakForwardVoltage(Volts.of(2)).withPeakReverseVoltage(Volts.of(-2));
-    configs.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    configs.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     var motionMagicConfigs = configs.MotionMagic;
     motionMagicConfigs.MotionMagicCruiseVelocity = 80; // Target cruise velocity of 80 rps
     motionMagicConfigs.MotionMagicAcceleration =
@@ -52,6 +59,9 @@ public class LaunchAngle implements Subsystem {
     motionMagicConfigs.MotionMagicJerk = 1600; // Target jerk of 1600 rps/s/s (0.1 seconds)
     configs.withSlot0(launcherAngleGains);
     m_angleMotor.getConfigurator().apply(configs);
+
+    // Zero the internal encoder on startup. Assumes the LauncherAngle is at starting position.
+    m_angleMotor.setPosition(0.0);
   }
 
   /**
@@ -92,5 +102,30 @@ public class LaunchAngle implements Subsystem {
    */
   public void setBrakeMode(NeutralModeValue mode) {
     m_angleMotor.setNeutralMode(mode);
+  }
+
+  /**
+   * Sets the angle motor to a certain power.
+   *
+   * @param power the power to set the motor to.
+   */
+  public void moveLaunchAngle(double power) {
+    DutyCycleOut mypower = new DutyCycleOut(0.0);
+    m_angleMotor.setControl(mypower.withOutput(power));
+  }
+
+  public boolean isLimitSwitchNewlyPressed() {
+    if (!m_isLimitSwitchPressed) {
+      m_isLimitSwitchPressed = m_limitSwitch.get();
+      return m_isLimitSwitchPressed;
+    } else {
+      m_isLimitSwitchPressed = m_limitSwitch.get();
+    }
+    // System.out.println("Limit Switch Value : [" + m_limitSwitch.get() + "]");
+    return false;
+  }
+
+  public void zeroEncoder() {
+    m_angleMotor.setPosition(0.0);
   }
 }

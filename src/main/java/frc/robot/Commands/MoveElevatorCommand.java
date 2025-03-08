@@ -1,7 +1,6 @@
-package frc.robot.Commands;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotMap;
 import frc.robot.subsystems.Elevator;
 
 /**
@@ -15,18 +14,18 @@ public class MoveElevatorCommand extends Command {
   private final Elevator m_elevatorSubsystem;
 
   // Target position in terms of mm.
-  private final double m_targetPosition;
+  private final double m_dutyCycle;
 
   /**
    * Constructor which constructs an object representing the Elevator and the target position.
    *
    * @param elevatorSubsystem The elevator subsystem needed to construct the elevator subsystem
    *     object.
-   * @param targetPosition The target position needed to construct the target position object.
+   * @param power percent power to send to elevator motor
    */
-  public MoveElevatorCommand(Elevator elevatorSubsytem, double targetPosition) {
+  public MoveElevatorCommand(Elevator elevatorSubsytem, double power) {
     m_elevatorSubsystem = elevatorSubsytem;
-    m_targetPosition = targetPosition;
+    m_dutyCycle = power;
     addRequirements(elevatorSubsytem);
   }
 
@@ -45,25 +44,17 @@ public class MoveElevatorCommand extends Command {
    */
   @Override
   public void execute() {
-    m_elevatorSubsystem.setElevatorPosition(m_targetPosition);
+    m_elevatorSubsystem.moveElevator(m_dutyCycle);
   }
 
   /**
    * @see frc.robot.Commands.MoveElevatorCommand Method which compares the current position of the
    *     elevator to the desired position.
-   * @return A boolean which is true if the current position is within 10 mm of the desired
-   *     position.
+   * @return false -- the command never finishes on its own.
    */
   @Override
   public boolean isFinished() {
-
-    // Calls the getElevatorPostition method from the elevator class to use to figure out whether we
-    // have reached the target position.
-    double currentPosition = m_elevatorSubsystem.getElevatorPosition();
-    // Returns true if the absolute value of the current position minus the target position is less
-    // than the elevator margin of error.
-    return Math.abs(currentPosition - m_targetPosition)
-        < RobotMap.ElevatorConstants.ELEVATOR_MARGIN_OF_ERROR;
+    return false;
   }
 
   /**
