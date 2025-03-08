@@ -101,8 +101,7 @@ public class RobotContainer {
             m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L4_SCORE_HEIGHT));
     NamedCommands.registerCommand("ScoreCoral", new LaunchCoralCommand(m_launcher));
     NamedCommands.registerCommand(
-        "MoveLauncherIntake",
-        new MoveLauncherToIntakePosition(m_launchAngle, m_elevator));
+        "MoveLauncherIntake", new MoveLauncherToIntakePosition(m_launchAngle, m_elevator));
   }
 
   public void setAllianceColor(Alliance color) {
