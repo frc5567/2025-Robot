@@ -158,21 +158,21 @@ public class RobotContainer {
                 () ->
                     drive
                         .withVelocityX(
-                            -m_pilotController.getLeftY()
+                            -(Math.copySign(
+                                    (Math.pow(m_pilotController.getLeftY(), 2)),
+                                    m_pilotController.getLeftY())
                                 * MaxSpeed
-                                / 3
-                                * RobotMap.DriveTrainConstants
-                                    .DRIVE_SCALAR) // Drive forward with negative Y (forward)
+                                / 6)) // Drive forward with negative Y (forward)
                         .withVelocityY(
-                            -m_pilotController.getLeftX()
+                            -(Math.copySign(
+                                    (Math.pow(m_pilotController.getLeftX(), 2)),
+                                    m_pilotController.getLeftX())
                                 * MaxSpeed
-                                / 3
-                                * RobotMap.DriveTrainConstants
-                                    .DRIVE_SCALAR) // Drive left with negative X (left)
+                                / 6)) // Drive left with negative X (left)
                         .withRotationalRate(
                             -m_pilotController.getRightX()
                                 * MaxAngularRate
-                                / 3) // Drive counterclockwise with negative X (left)
+                                / 6) // Drive counterclockwise with negative X (left)
                 ));
 
     // Run SysId routines when holding back/start and X/Y.

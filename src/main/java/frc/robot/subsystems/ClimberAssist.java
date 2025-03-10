@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -21,6 +22,9 @@ public class ClimberAssist implements Subsystem {
     m_climberAssistMotor = new TalonSRX(motorPort);
     m_climberAssistMotor.configSelectedFeedbackSensor(
         com.ctre.phoenix.motorcontrol.FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+    m_climberAssistMotor.setInverted(InvertType.InvertMotorOutput);
+    m_climberAssistMotor.setSensorPhase(true);
+    m_climberAssistMotor.setSelectedSensorPosition(0, 0, 10); // sets the encoder position to zero
   }
 
   /**
@@ -42,6 +46,9 @@ public class ClimberAssist implements Subsystem {
    */
   public void setClimberAssistPosition(double position) {
     m_climberAssistMotor.set(com.ctre.phoenix.motorcontrol.ControlMode.Position, position);
+
+    System.out.println(
+        "ClimbAssist position [" + getClimberAssistPosition() + "][" + position + "]");
   }
 
   /**

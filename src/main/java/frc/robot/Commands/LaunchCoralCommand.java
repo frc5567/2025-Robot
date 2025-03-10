@@ -53,7 +53,7 @@ public class LaunchCoralCommand extends Command {
    */
   @Override
   public boolean isFinished() {
-    if (m_launchCounter > 5) {
+    if (m_launchCounter > 200) {
       return true;
     }
     return false;

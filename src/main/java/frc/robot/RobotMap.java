@@ -121,14 +121,14 @@ public class RobotMap {
     public static final int CLIMBER_ASSIST_MOTOR_CAN_ID = 33;
 
     // TODO: find the correct offset for the climber assist motor.
-    public static final double OFFSET = 2;
+    public static final double OFFSET = 0;
 
     // TODO: find correct margin of error for the climber assist.
-    public static final double CLIMBER_ASSIST_MARGIN_OF_ERROR = 2.0;
+    public static final double CLIMBER_ASSIST_MARGIN_OF_ERROR = 5000;
 
     // TODO: find diameter of rack and pinion gear multiplyed by pi devided by 70 for gear ratio to
     // find travel per rotation in mm. Now uses 775Pro motor so encoder units are ticks - 4096 per.
-    public static final double CLIMBER_ASSIST_TRAVEL_DISTANCE = 10.0;
+    public static final double CLIMBER_ASSIST_TRAVEL_DISTANCE = 250000;
   }
 
   /**
