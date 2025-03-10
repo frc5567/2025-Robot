@@ -1,9 +1,8 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.StatusSignal;
-import com.ctre.phoenix6.controls.PositionVoltage;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.RobotMap;
@@ -14,9 +13,8 @@ import frc.robot.RobotMap;
  */
 public class ClimberAssist implements Subsystem {
 
-  private TalonFX m_climberAssistMotor;
+  private TalonSRX m_climberAssistMotor;
 
-  private PositionVoltage m_positionVoltage = new PositionVoltage(0).withSlot(0);
 
   /**
    * The constructor of the climber Assist class.
@@ -24,7 +22,9 @@ public class ClimberAssist implements Subsystem {
    * @param motorPort the CAN ID of the climber Assist motor.
    */
   public ClimberAssist(int motorPort) {
-    m_climberAssistMotor = new TalonFX(motorPort);
+    m_climberAssistMotor = new TalonSRX(motorPort);
+    m_climberAssistMotor.configSelectedFeedbackSensor(
+      com.ctre.phoenix.motorcontrol.FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
   }
 
   /**
@@ -33,25 +33,19 @@ public class ClimberAssist implements Subsystem {
    * @return The position of the climber Assist in rotations.
    */
   public double getClimberAssistPosition() {
-    StatusSignal<Angle> rotations = m_climberAssistMotor.getPosition();
-    Angle positionInRotations = rotations.getValue();
-    Angle offset =
-        Angle.ofRelativeUnits(
-            RobotMap.ClimberAssistConstants.OFFSET, edu.wpi.first.units.Units.Rotations);
-    positionInRotations = positionInRotations.plus(offset);
-    double returnValue = positionInRotations.magnitude();
-    return returnValue;
+    double pos = m_climberAssistMotor.getSelectedSensorPosition();
+
+    return pos;
   }
 
   /**
-   * Sets the climber Assist position in terms of rotations.
-   *
-   * @param position The target position in terms of rotations.
+   * @see frc.robot.subsystems.ClimberAssist
+   *     <p>Sets the position of the climber Assist motor.
+   * @param position The position to set the climber Assist motor to.
+   * @return returns nothing.
    */
   public void setClimberAssistPosition(double position) {
-
-    m_climberAssistMotor.setControl(m_positionVoltage.withPosition(position));
-    // double curPos = getClimberAssistPosition();
+    m_climberAssistMotor.set(com.ctre.phoenix.motorcontrol.ControlMode.Position, position);
   }
 
   /**
@@ -60,7 +54,7 @@ public class ClimberAssist implements Subsystem {
    * @return returns nothing.
    */
   public void stopClimberAssist() {
-    m_climberAssistMotor.set(0);
+    m_climberAssistMotor.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, 0.0);
   }
 
   /**
@@ -68,7 +62,7 @@ public class ClimberAssist implements Subsystem {
    * expose this so we can set it to coast in disabledInit so the elevator can be manually
    * controlled when the bot is disabled.
    */
-  public void setBrakeMode(NeutralModeValue mode) {
+  public void setBrakeMode(NeutralMode mode) {
     m_climberAssistMotor.setNeutralMode(mode);
   }
 }

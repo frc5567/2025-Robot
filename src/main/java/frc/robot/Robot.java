@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -115,6 +116,7 @@ public class Robot extends TimedRobot {
     m_robotContainer.m_launchAngle.setBrakeMode(NeutralModeValue.Coast);
     m_robotContainer.m_climber.setBrakeMode(NeutralModeValue.Coast);
     m_robotContainer.m_launcher.setBrakeMode(NeutralModeValue.Coast);
+    m_robotContainer.m_climberAssist.setBrakeMode(NeutralMode.Coast);
   }
 
   @Override
@@ -140,6 +142,7 @@ public class Robot extends TimedRobot {
     m_robotContainer.m_launchAngle.setBrakeMode(NeutralModeValue.Brake);
     m_robotContainer.m_climber.setBrakeMode(NeutralModeValue.Brake);
     m_robotContainer.m_launcher.setBrakeMode(NeutralModeValue.Brake);
+    m_robotContainer.m_climberAssist.setBrakeMode(NeutralMode.Brake);
   }
 
   @Override
@@ -166,6 +169,7 @@ public class Robot extends TimedRobot {
     m_robotContainer.m_launchAngle.setBrakeMode(NeutralModeValue.Brake);
     m_robotContainer.m_climber.setBrakeMode(NeutralModeValue.Brake);
     m_robotContainer.m_launcher.setBrakeMode(NeutralModeValue.Brake);
+    m_robotContainer.m_climberAssist.setBrakeMode(NeutralMode.Brake);
   }
 
   @Override
@@ -187,6 +191,7 @@ public class Robot extends TimedRobot {
     m_robotContainer.m_launchAngle.setBrakeMode(NeutralModeValue.Brake);
     m_robotContainer.m_climber.setBrakeMode(NeutralModeValue.Brake);
     m_robotContainer.m_launcher.setBrakeMode(NeutralModeValue.Brake);
+    m_robotContainer.m_climberAssist.setBrakeMode(NeutralMode.Brake);
   }
 
   @Override
