@@ -96,6 +96,18 @@ public class RobotContainer {
 
   private void registerNamedCommands() {
     NamedCommands.registerCommand(
+        "MoveLauncherToL1",
+        new MoveLauncherToLaunchPosition(
+            m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L1_SCORE_HEIGHT));
+    NamedCommands.registerCommand(
+        "MoveLauncherToL2",
+        new MoveLauncherToLaunchPosition(
+            m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L2_SCORE_HEIGHT));
+    NamedCommands.registerCommand(
+        "MoveLauncherToL3",
+        new MoveLauncherToLaunchPosition(
+            m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L3_SCORE_HEIGHT));
+    NamedCommands.registerCommand(
         "MoveLauncherToL4",
         new MoveLauncherToLaunchPosition(
             m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L4_SCORE_HEIGHT));
