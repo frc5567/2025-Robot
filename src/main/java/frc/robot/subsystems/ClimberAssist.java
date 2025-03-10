@@ -2,10 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.RobotMap;
 
 /**
  * @see frc.robot.subsystems.ClimberAssist
@@ -15,7 +12,6 @@ public class ClimberAssist implements Subsystem {
 
   private TalonSRX m_climberAssistMotor;
 
-
   /**
    * The constructor of the climber Assist class.
    *
@@ -24,7 +20,7 @@ public class ClimberAssist implements Subsystem {
   public ClimberAssist(int motorPort) {
     m_climberAssistMotor = new TalonSRX(motorPort);
     m_climberAssistMotor.configSelectedFeedbackSensor(
-      com.ctre.phoenix.motorcontrol.FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+        com.ctre.phoenix.motorcontrol.FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
   }
 
   /**
