@@ -50,6 +50,14 @@ public class DriveToRightBranch extends Command {
 
   @Override
   public boolean isFinished() {
+    if (m_pathCommand == null) {
+      System.out.println("Command ended without saying finished");
+    } else {
+      if (m_pathCommand.isFinished()) {
+        System.out.println("Command finished");
+      }
+    }
+
     return m_pathCommand == null || m_pathCommand.isFinished();
   }
 

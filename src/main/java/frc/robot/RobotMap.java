@@ -40,7 +40,7 @@ public class RobotMap {
     public static final double L3_SCORE_HEIGHT = 550.0;
 
     // TODO: Figure out correct height in mm needed for level 4 or if we are even going for level 4.
-    public static final double L4_SCORE_HEIGHT = 1160.0;
+    public static final double L4_SCORE_HEIGHT = 1250.0;
 
     // Found offset using pheonix tuner subtracting, in mm.
     public static final double OFFSET = 0.438477;
@@ -286,7 +286,7 @@ public class RobotMap {
       public static final Transform3d LEFT_BRANCH =
           new Transform3d(
               Inches.of(0.0),
-              Inches.of(-4.0),
+              Inches.of(-6.0),
               Inches.of(0.0),
               new Rotation3d(Degrees.of(0.0), Degrees.of(0.0), Degrees.of(0.0)));
 
@@ -298,7 +298,7 @@ public class RobotMap {
       public static final Transform3d RIGHT_BRANCH =
           new Transform3d(
               Inches.of(0.0),
-              Inches.of(7.0),
+              Inches.of(6.0),
               Inches.of(0.0),
               new Rotation3d(Degrees.of(0.0), Degrees.of(0.0), Degrees.of(0.0)));
 
@@ -311,7 +311,7 @@ public class RobotMap {
        */
       public static final Transform3d ROBOT_TRANSFORM =
           new Transform3d(
-              Inches.of(16.0),
+              Inches.of(13.0),
               Inches.of(0.0),
               Inches.of(0.0),
               new Rotation3d(Degrees.of(0.0), Degrees.of(0.0), Degrees.of(180.0)));

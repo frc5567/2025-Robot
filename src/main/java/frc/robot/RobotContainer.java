@@ -121,8 +121,6 @@ public class RobotContainer {
     NamedCommands.registerCommand("DriveToRightBranch", new DriveToRightBranch(m_drivetrain));
 
     NamedCommands.registerCommand("ScoreCoral", new LaunchCoralCommand(m_launcher));
-
-
   }
 
   public void setAllianceColor(Alliance color) {

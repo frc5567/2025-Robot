@@ -35,7 +35,7 @@ public class MoveLauncherToLaunchL4Position extends Command {
             < RobotMap.ElevatorConstants.ELEVATOR_MARGIN_OF_ERROR;
     double currentLauncherAnglePosition = m_launchAngle.getPosition();
     boolean launchAngleFinished =
-        Math.abs(currentLauncherAnglePosition - RobotMap.AngleMotorConstants.ANGLE_AT_LAUNCH)
+        Math.abs(currentLauncherAnglePosition - RobotMap.AngleMotorConstants.ANGLE_AT_L4_LAUNCH)
             < RobotMap.AngleMotorConstants.ANGLE_TOLERANCE;
 
     return (elevatorFinished && launchAngleFinished);
