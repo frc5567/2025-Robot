@@ -40,7 +40,7 @@ public class RobotMap {
     public static final double L3_SCORE_HEIGHT = 550.0;
 
     // TODO: Figure out correct height in mm needed for level 4 or if we are even going for level 4.
-    public static final double L4_SCORE_HEIGHT = 1175.0;
+    public static final double L4_SCORE_HEIGHT = 1160.0;
 
     // Found offset using pheonix tuner subtracting, in mm.
     public static final double OFFSET = 0.438477;
