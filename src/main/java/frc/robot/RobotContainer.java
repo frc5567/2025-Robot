@@ -109,9 +109,7 @@ public class RobotContainer {
         new MoveLauncherToLaunchPosition(
             m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L3_SCORE_HEIGHT));
     NamedCommands.registerCommand(
-        "MoveLauncherToL4",
-        new MoveLauncherToLaunchL4Position(
-            m_launchAngle, m_elevator));
+        "MoveLauncherToL4", new MoveLauncherToLaunchL4Position(m_launchAngle, m_elevator));
 
     NamedCommands.registerCommand("DriveToRightBranch", new DriveToRightBranch(m_drivetrain));
 

@@ -10,8 +10,7 @@ public class MoveLauncherToLaunchL4Position extends Command {
   private final LaunchAngle m_launchAngle;
   private final Elevator m_elevator;
 
-  public MoveLauncherToLaunchL4Position(
-      LaunchAngle launchAngle, Elevator elevator) {
+  public MoveLauncherToLaunchL4Position(LaunchAngle launchAngle, Elevator elevator) {
     m_launchAngle = launchAngle;
     m_elevator = elevator;
     addRequirements(launchAngle, elevator);

@@ -103,7 +103,7 @@ public class RobotMap {
     public static final double CLIMBER_MARGIN_OF_ERROR = 0.5;
 
     /** 40:1 gear ratio and 2.25 rotations of the output shaft for complete travel. */
-    public static final double CLIMBER_TRAVEL_DISTANCE = 90.0;
+    public static final double CLIMBER_TRAVEL_DISTANCE = 300;
 
     // Offset found by measuring through pheonix tuner in rotations.
     public static final double OFFSET = -5.281250;
@@ -131,7 +131,7 @@ public class RobotMap {
 
     // TODO: find diameter of rack and pinion gear multiplyed by pi devided by 70 for gear ratio to
     // find travel per rotation in mm. Now uses 775Pro motor so encoder units are ticks - 4096 per.
-    public static final double CLIMBER_ASSIST_TRAVEL_DISTANCE = 250000;
+    public static final double CLIMBER_ASSIST_TRAVEL_DISTANCE = 300000;
   }
 
   /**
