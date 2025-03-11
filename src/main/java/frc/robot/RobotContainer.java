@@ -96,18 +96,25 @@ public class RobotContainer {
   }
 
   private void registerNamedCommands() {
+
+    NamedCommands.registerCommand(
+        "MoveLauncherIntake", new MoveLauncherToIntakePosition(m_launchAngle, m_elevator));
+
     NamedCommands.registerCommand(
         "MoveLauncherToL1",
         new MoveLauncherToLaunchPosition(
             m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L1_SCORE_HEIGHT));
+
     NamedCommands.registerCommand(
         "MoveLauncherToL2",
         new MoveLauncherToLaunchPosition(
             m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L2_SCORE_HEIGHT));
+
     NamedCommands.registerCommand(
         "MoveLauncherToL3",
         new MoveLauncherToLaunchPosition(
             m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L3_SCORE_HEIGHT));
+
     NamedCommands.registerCommand(
         "MoveLauncherToL4", new MoveLauncherToLaunchL4Position(m_launchAngle, m_elevator));
 
@@ -115,8 +122,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("ScoreCoral", new LaunchCoralCommand(m_launcher));
 
-    NamedCommands.registerCommand(
-        "MoveLauncherIntake", new MoveLauncherToIntakePosition(m_launchAngle, m_elevator));
+
   }
 
   public void setAllianceColor(Alliance color) {
