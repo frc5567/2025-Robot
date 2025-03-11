@@ -25,6 +25,7 @@ import frc.robot.commands.LaunchCoralCommand;
 import frc.robot.commands.MoveElevatorCommand;
 import frc.robot.commands.MoveLaunchAngleCommand;
 import frc.robot.commands.MoveLauncherToIntakePosition;
+import frc.robot.commands.MoveLauncherToLaunchL4Position;
 import frc.robot.commands.MoveLauncherToLaunchPosition;
 import frc.robot.generated.Telemetry;
 import frc.robot.generated.TunerConstants;
@@ -109,8 +110,8 @@ public class RobotContainer {
             m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L3_SCORE_HEIGHT));
     NamedCommands.registerCommand(
         "MoveLauncherToL4",
-        new MoveLauncherToLaunchPosition(
-            m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L4_SCORE_HEIGHT));
+        new MoveLauncherToLaunchL4Position(
+            m_launchAngle, m_elevator));
 
     NamedCommands.registerCommand("DriveToRightBranch", new DriveToRightBranch(m_drivetrain));
 

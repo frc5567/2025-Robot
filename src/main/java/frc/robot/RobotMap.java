@@ -80,15 +80,18 @@ public class RobotMap {
 
     // TODO: find correct value of tolerance in degrees.
     public static final double ANGLE_TOLERANCE = 0.25;
-    // TODO: find correct angle of movement in degrees.
+
     public static final double ANGLE_AT_LAUNCH = 14.0;
-    // TODO: Adjust angle if needed.
+
+    public static final double ANGLE_AT_L4_LAUNCH = 15.5;
+
     public static final double ANGLE_AT_INTAKE = 7.5;
+
     // offset found by mesuring through pheonix tuner in rotations.
     public static final double OFFSET = -0.045410;
 
     // TODO: Tune this to be reasonable for the drive team.
-    public static final double MANUAL_ANGLE_POWER = 0.15;
+    public static final double MANUAL_ANGLE_POWER = 0.10;
   }
 
   public static final class ClimberConstants {
