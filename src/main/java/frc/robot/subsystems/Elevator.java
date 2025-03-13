@@ -98,8 +98,8 @@ public class Elevator implements Subsystem {
     // Convert desired position to distance in mm.
     double targetRotations = position / RobotMap.ElevatorConstants.MM_PER_ROTATION;
     targetRotations = targetRotations - RobotMap.ElevatorConstants.OFFSET; // Offset the position
-    // m_elevatorMotor.setControl(m_motionMagicVoltage.withPosition(targetRotations));
-    m_elevatorMotor.setControl(m_positionVoltage.withPosition(targetRotations));
+    m_elevatorMotor.setControl(m_motionMagicVoltage.withPosition(targetRotations));
+    // m_elevatorMotor.setControl(m_positionVoltage.withPosition(targetRotations));
     double curPos = getElevatorPosition();
     System.out.println(
         "Attempting to move to position (" + position + ") Currently at (" + curPos + ")");

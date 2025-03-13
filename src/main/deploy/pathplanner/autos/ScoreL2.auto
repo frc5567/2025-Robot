@@ -11,13 +11,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "DriveToReefDForL4"
+                  "pathName": "DriveToReefd"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "MoveLauncherToL4"
+                  "name": "MoveLauncherToL2"
                 }
               }
             ]

@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -76,14 +77,14 @@ public class Robot extends TimedRobot {
           && !((m_curPoseEstimate.pose.getX() == 0) && (m_curPoseEstimate.pose.getY() == 0))) {
         m_robotContainer.m_drivetrain.addVisionMeasurement(
             m_curPoseEstimate.pose, Utils.fpgaToCurrentTime(m_curPoseEstimate.timestampSeconds));
-        if (m_outputCounter >= 50) {
-          System.out.println(
-              "Robot saw an AprilTag and tried to adjust pose ["
-                  + m_curPoseEstimate.pose.getX()
-                  + "]["
-                  + m_curPoseEstimate.pose.getX()
-                  + "]");
-        }
+        // if (m_outputCounter >= 50) {
+        //   System.out.println(
+        //       "Robot saw an AprilTag and tried to adjust pose ["
+        //           + m_curPoseEstimate.pose.getX()
+        //           + "]["
+        //           + m_curPoseEstimate.pose.getX()
+        //           + "]");
+        // }
       }
     }
     double curTime = Utils.getCurrentTimeSeconds();
@@ -91,8 +92,8 @@ public class Robot extends TimedRobot {
     if (curPose.isPresent()) {
       m_field.setRobotPose(curPose.get());
       if (m_outputCounter >= 50) {
-        System.out.println(
-            "Robot pose [" + curPose.get().getX() + "][" + curPose.get().getX() + "]");
+        // System.out.println(
+        //     "Robot pose [" + curPose.get().getX() + "][" + curPose.get().getX() + "]");
       }
     }
 
@@ -115,6 +116,7 @@ public class Robot extends TimedRobot {
     m_robotContainer.m_launchAngle.setBrakeMode(NeutralModeValue.Coast);
     m_robotContainer.m_climber.setBrakeMode(NeutralModeValue.Coast);
     m_robotContainer.m_launcher.setBrakeMode(NeutralModeValue.Coast);
+    m_robotContainer.m_climberAssist.setBrakeMode(NeutralMode.Coast);
   }
 
   @Override
@@ -140,6 +142,7 @@ public class Robot extends TimedRobot {
     m_robotContainer.m_launchAngle.setBrakeMode(NeutralModeValue.Brake);
     m_robotContainer.m_climber.setBrakeMode(NeutralModeValue.Brake);
     m_robotContainer.m_launcher.setBrakeMode(NeutralModeValue.Brake);
+    m_robotContainer.m_climberAssist.setBrakeMode(NeutralMode.Brake);
   }
 
   @Override
@@ -166,6 +169,7 @@ public class Robot extends TimedRobot {
     m_robotContainer.m_launchAngle.setBrakeMode(NeutralModeValue.Brake);
     m_robotContainer.m_climber.setBrakeMode(NeutralModeValue.Brake);
     m_robotContainer.m_launcher.setBrakeMode(NeutralModeValue.Brake);
+    m_robotContainer.m_climberAssist.setBrakeMode(NeutralMode.Brake);
   }
 
   @Override
@@ -187,6 +191,7 @@ public class Robot extends TimedRobot {
     m_robotContainer.m_launchAngle.setBrakeMode(NeutralModeValue.Brake);
     m_robotContainer.m_climber.setBrakeMode(NeutralModeValue.Brake);
     m_robotContainer.m_launcher.setBrakeMode(NeutralModeValue.Brake);
+    m_robotContainer.m_climberAssist.setBrakeMode(NeutralMode.Brake);
   }
 
   @Override

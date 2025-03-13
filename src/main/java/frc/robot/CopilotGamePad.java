@@ -35,8 +35,8 @@ public class CopilotGamePad extends CommandGenericHID {
     Elevator_L3(6),
     Elevator_L4(7),
     Left_Reef(8),
-    Manual_Elevator_Up(9),
-    Manual_Elevator_Down(10),
+    Manual_Elevator_Down(9),
+    Manual_Elevator_Up(10),
     Right_Reef(11),
     Launcher_Down(12);
 

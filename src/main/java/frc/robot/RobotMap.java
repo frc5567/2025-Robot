@@ -40,7 +40,7 @@ public class RobotMap {
     public static final double L3_SCORE_HEIGHT = 550.0;
 
     // TODO: Figure out correct height in mm needed for level 4 or if we are even going for level 4.
-    public static final double L4_SCORE_HEIGHT = 1175.0;
+    public static final double L4_SCORE_HEIGHT = 1250.0;
 
     // Found offset using pheonix tuner subtracting, in mm.
     public static final double OFFSET = 0.438477;
@@ -80,15 +80,18 @@ public class RobotMap {
 
     // TODO: find correct value of tolerance in degrees.
     public static final double ANGLE_TOLERANCE = 0.25;
-    // TODO: find correct angle of movement in degrees.
+
     public static final double ANGLE_AT_LAUNCH = 14.0;
-    // TODO: Adjust angle if needed.
+
+    public static final double ANGLE_AT_L4_LAUNCH = 15.5;
+
     public static final double ANGLE_AT_INTAKE = 7.5;
+
     // offset found by mesuring through pheonix tuner in rotations.
     public static final double OFFSET = -0.045410;
 
     // TODO: Tune this to be reasonable for the drive team.
-    public static final double MANUAL_ANGLE_POWER = 0.15;
+    public static final double MANUAL_ANGLE_POWER = 0.10;
   }
 
   public static final class ClimberConstants {
@@ -100,7 +103,7 @@ public class RobotMap {
     public static final double CLIMBER_MARGIN_OF_ERROR = 0.5;
 
     /** 40:1 gear ratio and 2.25 rotations of the output shaft for complete travel. */
-    public static final double CLIMBER_TRAVEL_DISTANCE = 90.0;
+    public static final double CLIMBER_TRAVEL_DISTANCE = 300;
 
     // Offset found by measuring through pheonix tuner in rotations.
     public static final double OFFSET = -5.281250;
@@ -119,13 +122,16 @@ public class RobotMap {
   public static final class ClimberAssistConstants {
     // TODO: find corect CAN ID port.
     public static final int CLIMBER_ASSIST_MOTOR_CAN_ID = 33;
+
     // TODO: find the correct offset for the climber assist motor.
-    public static final double OFFSET = 2;
+    public static final double OFFSET = 0;
+
     // TODO: find correct margin of error for the climber assist.
-    public static final double CLIMBER_ASSIST_MARGIN_OF_ERROR = 2.0;
+    public static final double CLIMBER_ASSIST_MARGIN_OF_ERROR = 5000;
+
     // TODO: find diameter of rack and pinion gear multiplyed by pi devided by 70 for gear ratio to
-    // find travel per rotation in mm.
-    public static final double CLIMBER_ASSIST_TRAVEL_DISTANCE = 10.0;
+    // find travel per rotation in mm. Now uses 775Pro motor so encoder units are ticks - 4096 per.
+    public static final double CLIMBER_ASSIST_TRAVEL_DISTANCE = 300000;
   }
 
   /**
@@ -280,7 +286,7 @@ public class RobotMap {
       public static final Transform3d LEFT_BRANCH =
           new Transform3d(
               Inches.of(0.0),
-              Inches.of(-4.0),
+              Inches.of(-6.0),
               Inches.of(0.0),
               new Rotation3d(Degrees.of(0.0), Degrees.of(0.0), Degrees.of(0.0)));
 
@@ -292,7 +298,7 @@ public class RobotMap {
       public static final Transform3d RIGHT_BRANCH =
           new Transform3d(
               Inches.of(0.0),
-              Inches.of(7.0),
+              Inches.of(6.0),
               Inches.of(0.0),
               new Rotation3d(Degrees.of(0.0), Degrees.of(0.0), Degrees.of(0.0)));
 
@@ -305,7 +311,7 @@ public class RobotMap {
        */
       public static final Transform3d ROBOT_TRANSFORM =
           new Transform3d(
-              Inches.of(16.0),
+              Inches.of(13.0),
               Inches.of(0.0),
               Inches.of(0.0),
               new Rotation3d(Degrees.of(0.0), Degrees.of(0.0), Degrees.of(180.0)));

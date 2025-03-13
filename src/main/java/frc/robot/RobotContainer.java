@@ -25,6 +25,7 @@ import frc.robot.commands.LaunchCoralCommand;
 import frc.robot.commands.MoveElevatorCommand;
 import frc.robot.commands.MoveLaunchAngleCommand;
 import frc.robot.commands.MoveLauncherToIntakePosition;
+import frc.robot.commands.MoveLauncherToLaunchL4Position;
 import frc.robot.commands.MoveLauncherToLaunchPosition;
 import frc.robot.generated.Telemetry;
 import frc.robot.generated.TunerConstants;
@@ -95,13 +96,31 @@ public class RobotContainer {
   }
 
   private void registerNamedCommands() {
-    NamedCommands.registerCommand(
-        "MoveLauncherToL4",
-        new MoveLauncherToLaunchPosition(
-            m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L4_SCORE_HEIGHT));
-    NamedCommands.registerCommand("ScoreCoral", new LaunchCoralCommand(m_launcher));
+
     NamedCommands.registerCommand(
         "MoveLauncherIntake", new MoveLauncherToIntakePosition(m_launchAngle, m_elevator));
+
+    NamedCommands.registerCommand(
+        "MoveLauncherToL1",
+        new MoveLauncherToLaunchPosition(
+            m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L1_SCORE_HEIGHT));
+
+    NamedCommands.registerCommand(
+        "MoveLauncherToL2",
+        new MoveLauncherToLaunchPosition(
+            m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L2_SCORE_HEIGHT));
+
+    NamedCommands.registerCommand(
+        "MoveLauncherToL3",
+        new MoveLauncherToLaunchPosition(
+            m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L3_SCORE_HEIGHT));
+
+    NamedCommands.registerCommand(
+        "MoveLauncherToL4", new MoveLauncherToLaunchL4Position(m_launchAngle, m_elevator));
+
+    NamedCommands.registerCommand("DriveToRightBranch", new DriveToRightBranch(m_drivetrain));
+
+    NamedCommands.registerCommand("ScoreCoral", new LaunchCoralCommand(m_launcher));
   }
 
   public void setAllianceColor(Alliance color) {
@@ -144,21 +163,21 @@ public class RobotContainer {
                 () ->
                     drive
                         .withVelocityX(
-                            -m_pilotController.getLeftY()
+                            -(Math.copySign(
+                                    (Math.pow(m_pilotController.getLeftY(), 2)),
+                                    m_pilotController.getLeftY())
                                 * MaxSpeed
-                                / 3
-                                * RobotMap.DriveTrainConstants
-                                    .DRIVE_SCALAR) // Drive forward with negative Y (forward)
+                                / 6)) // Drive forward with negative Y (forward)
                         .withVelocityY(
-                            -m_pilotController.getLeftX()
+                            -(Math.copySign(
+                                    (Math.pow(m_pilotController.getLeftX(), 2)),
+                                    m_pilotController.getLeftX())
                                 * MaxSpeed
-                                / 3
-                                * RobotMap.DriveTrainConstants
-                                    .DRIVE_SCALAR) // Drive left with negative X (left)
+                                / 6)) // Drive left with negative X (left)
                         .withRotationalRate(
                             -m_pilotController.getRightX()
                                 * MaxAngularRate
-                                / 3) // Drive counterclockwise with negative X (left)
+                                / 6) // Drive counterclockwise with negative X (left)
                 ));
 
     // Run SysId routines when holding back/start and X/Y.
