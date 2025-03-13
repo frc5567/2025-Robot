@@ -177,7 +177,7 @@ public class RobotContainer {
                         .withRotationalRate(
                             -m_pilotController.getRightX()
                                 * MaxAngularRate
-                                / 6) // Drive counterclockwise with negative X (left)
+                                / 3) // Drive counterclockwise with negative X (left)
                 ));
 
     // Run SysId routines when holding back/start and X/Y.
