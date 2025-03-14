@@ -47,6 +47,8 @@ public class RobotMap {
 
     // TODO: Tune this to be reasonable for the drive team.
     public static final double MANUAL_ELEVATOR_POWER = 0.15;
+
+    public static final int ELEVATOR_LIMIT_SWITCH_DIO = 7;
   }
 
   public static final class LauncherConstants {

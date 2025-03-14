@@ -102,6 +102,13 @@ public class Robot extends TimedRobot {
     // Make sure we zero the encoder on the launch angle if the limit switch is pressed
     if (m_robotContainer.m_launchAngle.isLimitSwitchNewlyPressed()) {
       m_robotContainer.m_launchAngle.zeroEncoder();
+      m_robotContainer.m_launchAngle.stopLauncher();
+    }
+
+    // Make sure we zero the encoder on the elevator if the limit switch is pressed
+    if (m_robotContainer.m_elevator.isLimitSwitchNewlyPressed()) {
+      m_robotContainer.m_elevator.zeroEncoder();
+      m_robotContainer.m_elevator.stopElevator();
     }
 
     if (m_outputCounter >= 50) {
