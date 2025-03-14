@@ -177,7 +177,7 @@ public class RobotContainer {
                         .withRotationalRate(
                             -m_pilotController.getRightX()
                                 * MaxAngularRate
-                                / 6) // Drive counterclockwise with negative X (left)
+                                / 3) // Drive counterclockwise with negative X (left)
                 ));
 
     // Run SysId routines when holding back/start and X/Y.
@@ -200,9 +200,9 @@ public class RobotContainer {
         .whileTrue(m_drivetrain.sysIdQuasistatic(Direction.kReverse));
 
     // reset the field-centric heading on left bumper press
-    m_pilotController
-        .leftBumper()
-        .onTrue(m_drivetrain.runOnce(() -> m_drivetrain.seedFieldCentric()));
+    // m_pilotController
+    //     .leftBumper()
+    //     .onTrue(m_drivetrain.runOnce(() -> m_drivetrain.seedFieldCentric()));
 
     // Set the key bindings for the copilot controller
     m_copilotController

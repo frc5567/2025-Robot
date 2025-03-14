@@ -129,7 +129,6 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_alliance = DriverStation.getAlliance();
 
-    m_robotContainer.m_drivetrain.seedFieldCentric();
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     if (m_autonomousCommand != null) {
