@@ -149,11 +149,11 @@ public class Elevator implements Subsystem {
   public boolean isLimitSwitchNewlyPressed() {
     if (!m_isLimitSwitchPressed) {
       m_isLimitSwitchPressed = !m_limitSwitch.get();
-      //System.out.println("LimitSwitch[" + m_isLimitSwitchPressed + "]");
+      // System.out.println("LimitSwitch[" + m_isLimitSwitchPressed + "]");
       return m_isLimitSwitchPressed;
     } else {
       m_isLimitSwitchPressed = !m_limitSwitch.get();
-      //System.out.println("LimitSwitch[" + m_isLimitSwitchPressed + "]");      
+      // System.out.println("LimitSwitch[" + m_isLimitSwitchPressed + "]");
     }
     // System.out.println("Limit Switch Value : [" + m_limitSwitch.get() + "]");
     return false;
