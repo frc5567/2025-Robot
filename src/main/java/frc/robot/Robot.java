@@ -63,28 +63,14 @@ public class Robot extends TimedRobot {
      * of how to use vision should be tuned per-robot and to the team's specification.
      */
     if (kUseLimelight) {
-      m_alliance = DriverStation.getAlliance();
 
-      if (m_alliance.isPresent()) {
-        m_robotContainer.setAllianceColor(m_alliance.get());
-        if (m_alliance.get() == Alliance.Red) {
-          m_curPoseEstimate = LimelightHelpers.getBotPoseEstimate_wpiRed("limelight");
-        } else if (m_alliance.get() == Alliance.Blue) {
-          m_curPoseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
-        }
-      }
+      // PathPlanner wants all Pose information based on the origin by the left corner of the
+      // Blue Alliance Driver Station
+      m_curPoseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
       if ((m_curPoseEstimate != null)
           && !((m_curPoseEstimate.pose.getX() == 0) && (m_curPoseEstimate.pose.getY() == 0))) {
         m_robotContainer.m_drivetrain.addVisionMeasurement(
             m_curPoseEstimate.pose, Utils.fpgaToCurrentTime(m_curPoseEstimate.timestampSeconds));
-        // if (m_outputCounter >= 50) {
-        //   System.out.println(
-        //       "Robot saw an AprilTag and tried to adjust pose ["
-        //           + m_curPoseEstimate.pose.getX()
-        //           + "]["
-        //           + m_curPoseEstimate.pose.getX()
-        //           + "]");
-        // }
       }
     }
     double curTime = Utils.getCurrentTimeSeconds();

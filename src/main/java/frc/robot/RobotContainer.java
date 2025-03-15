@@ -130,6 +130,7 @@ public class RobotContainer {
   public void setAllianceColor(Alliance color) {
     if (color != m_allianceColor) {
       m_allianceColor = color;
+      System.out.println("color" + color);
     }
   }
 
