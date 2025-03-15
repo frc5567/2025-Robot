@@ -252,11 +252,11 @@ public class RobotContainer {
     m_copilotController
         .getElevatorL4()
         .whileTrue(
-            new MoveLauncherToLaunchPosition(
-                m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L4_SCORE_HEIGHT));
+            new MoveLauncherToLaunchL4Position(
+                m_launchAngle, m_elevator));
 
-    m_copilotController.getLeftReef().whileTrue(new DriveToLeftBranch(m_drivetrain));
-    m_copilotController.getRightReef().whileTrue(new DriveToRightBranch(m_drivetrain));
+    //m_copilotController.getLeftReef().whileTrue(new DriveToLeftBranch(m_drivetrain));
+    //m_copilotController.getRightReef().whileTrue(new DriveToRightBranch(m_drivetrain));
 
     m_copilotController
         .getManualElevatorDown()
