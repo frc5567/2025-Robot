@@ -13,6 +13,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.RobotMap;
 
@@ -27,6 +28,11 @@ public class Elevator implements Subsystem {
 
   private final MotionMagicVoltage m_motionMagicVoltage = new MotionMagicVoltage(0).withSlot(0);
   private final PositionVoltage m_positionVoltage = new PositionVoltage(0).withSlot(0);
+
+  private final DigitalInput m_limitSwitch =
+      new DigitalInput(RobotMap.ElevatorConstants.ELEVATOR_LIMIT_SWITCH_DIO);
+
+  private boolean m_isLimitSwitchPressed = false;
 
   /**
    * Elevator gains for default slot 0. Note that these values were not tuned and are just
@@ -122,6 +128,12 @@ public class Elevator implements Subsystem {
    */
   public void moveElevator(double power) {
     DutyCycleOut mypower = new DutyCycleOut(0.0);
+    if (power < 0) {
+      if (m_limitSwitch.get()) {
+        // don't manually overdrive down when already at the limit
+        return;
+      }
+    }
     m_elevatorMotor.setControl(mypower.withOutput(power));
   }
 
@@ -132,5 +144,22 @@ public class Elevator implements Subsystem {
    */
   public void setBrakeMode(NeutralModeValue mode) {
     m_elevatorMotor.setNeutralMode(mode);
+  }
+
+  public boolean isLimitSwitchNewlyPressed() {
+    if (!m_isLimitSwitchPressed) {
+      m_isLimitSwitchPressed = !m_limitSwitch.get();
+      // System.out.println("LimitSwitch[" + m_isLimitSwitchPressed + "]");
+      return m_isLimitSwitchPressed;
+    } else {
+      m_isLimitSwitchPressed = !m_limitSwitch.get();
+      // System.out.println("LimitSwitch[" + m_isLimitSwitchPressed + "]");
+    }
+    // System.out.println("Limit Switch Value : [" + m_limitSwitch.get() + "]");
+    return false;
+  }
+
+  public void zeroEncoder() {
+    m_elevatorMotor.setPosition(0.0);
   }
 }

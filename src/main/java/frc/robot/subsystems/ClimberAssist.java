@@ -3,7 +3,9 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.RobotMap;
 
 /**
  * @see frc.robot.subsystems.ClimberAssist
@@ -12,6 +14,9 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 public class ClimberAssist implements Subsystem {
 
   private TalonSRX m_climberAssistMotor;
+
+  private final DigitalInput m_limitSwitch =
+      new DigitalInput(RobotMap.ClimberAssistConstants.CLIMB_LIMIT_SWITCH_DIO);
 
   /**
    * The constructor of the climber Assist class.
@@ -45,10 +50,13 @@ public class ClimberAssist implements Subsystem {
    * @return returns nothing.
    */
   public void setClimberAssistPosition(double position) {
-    m_climberAssistMotor.set(com.ctre.phoenix.motorcontrol.ControlMode.Position, position);
+    boolean canMove = m_limitSwitch.get();
+    // System.out.println("LimitSwitch[" + canMove + "] pos [" +
+    // m_climberAssistMotor.getSelectedSensorPosition() + "]");
 
-    System.out.println(
-        "ClimbAssist position [" + getClimberAssistPosition() + "][" + position + "]");
+    if (canMove) {
+      m_climberAssistMotor.set(com.ctre.phoenix.motorcontrol.ControlMode.Position, position);
+    }
   }
 
   /**

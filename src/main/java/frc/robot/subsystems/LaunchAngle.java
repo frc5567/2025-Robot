@@ -111,6 +111,12 @@ public class LaunchAngle implements Subsystem {
    */
   public void moveLaunchAngle(double power) {
     DutyCycleOut mypower = new DutyCycleOut(0.0);
+    if (power < 0) {
+      if (m_limitSwitch.get()) {
+        // don't manually overdrive down when already at the limit
+        return;
+      }
+    }
     m_angleMotor.setControl(mypower.withOutput(power));
   }
 

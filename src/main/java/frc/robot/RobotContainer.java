@@ -8,6 +8,7 @@ import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.ctre.phoenix6.swerve.SwerveRequest.ForwardPerspectiveValue;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -49,6 +50,7 @@ public class RobotContainer {
       new SwerveRequest.FieldCentric()
           .withDeadband(MaxSpeed * 0.1)
           .withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+          .withForwardPerspective(ForwardPerspectiveValue.OperatorPerspective)
           .withDriveRequestType(
               DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
@@ -86,10 +88,12 @@ public class RobotContainer {
 
   private Alliance m_allianceColor;
 
+  private int sign = -1;
+
   public RobotContainer() {
     registerNamedCommands();
 
-    autoChooser = AutoBuilder.buildAutoChooser("Tests");
+    autoChooser = AutoBuilder.buildAutoChooser("None");
     SmartDashboard.putData("Auto Mode", autoChooser);
     m_allianceColor = Alliance.Red;
     configureBindings();
@@ -126,6 +130,7 @@ public class RobotContainer {
   public void setAllianceColor(Alliance color) {
     if (color != m_allianceColor) {
       m_allianceColor = color;
+      System.out.println("color" + color);
     }
   }
 
