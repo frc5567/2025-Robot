@@ -60,14 +60,14 @@ public class RobotMap {
      * coral.
      */
     // TODO: Figure out the actual Launch speed we want it to launch at.
-    public static final double LAUNCHER_SPEED = 0.2;
+    public static final double LAUNCHER_SPEED = 0.25;
 
     /**
      * Sets the motor speed in terms of percent power on the launcher motor to maintain contol of
      * coral.
      */
     // TODO: Figure out the actual Launch speed we want it to intake at.
-    public static final double INTAKE_SPEED = -0.1;
+    public static final double INTAKE_SPEED = -0.2;
 
     // TODO: Figure out the actual DIO port for Launcher sensor.
     public static final int LAUNCHER_SENSOR_DIO_PORT = 9;
@@ -85,7 +85,7 @@ public class RobotMap {
 
     public static final double ANGLE_AT_LAUNCH = 14.0;
 
-    public static final double ANGLE_AT_L4_LAUNCH = 15.5;
+    public static final double ANGLE_AT_L4_LAUNCH = 17.5;
 
     public static final double ANGLE_AT_INTAKE = 7.5;
 

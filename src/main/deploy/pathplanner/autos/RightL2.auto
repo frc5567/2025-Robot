@@ -11,7 +11,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "DriveToReefa"
+                  "pathName": "RightL2"
                 }
               },
               {
@@ -30,13 +30,13 @@
           }
         },
         {
-          "type": "sequential",
+          "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "LeaveReefA"
+                  "pathName": "RightL2Leave"
                 }
               },
               {
