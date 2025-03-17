@@ -11,10 +11,12 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.ctre.phoenix6.swerve.SwerveRequest.ForwardPerspectiveValue;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ClimbCommand;
@@ -35,6 +37,8 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LaunchAngle;
 import frc.robot.subsystems.Launcher;
+import java.util.Comparator;
+import java.util.List;
 
 public class RobotContainer {
   private double MaxSpeed =
@@ -86,15 +90,30 @@ public class RobotContainer {
 
   private Alliance m_allianceColor;
 
-  private int sign = -1;
-
   public RobotContainer() {
     registerNamedCommands();
 
-    autoChooser = AutoBuilder.buildAutoChooser("None");
+    autoChooser = addAutos();
     SmartDashboard.putData("Auto Mode", autoChooser);
     m_allianceColor = Alliance.Red;
     configureBindings();
+  }
+
+  private SendableChooser<Command> addAutos() {
+
+    SendableChooser<Command> chooser = new SendableChooser<>();
+    List<String> autoNames = AutoBuilder.getAllAutoNames();
+
+    autoNames.sort(Comparator.naturalOrder());
+
+    for (String autoName : autoNames) {
+      PathPlannerAuto auto = new PathPlannerAuto(autoName);
+      chooser.addOption(autoName, auto);
+    }
+
+    chooser.setDefaultOption("None", Commands.none());
+
+    return chooser;
   }
 
   private void registerNamedCommands() {
