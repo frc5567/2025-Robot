@@ -19,8 +19,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.ClimbInitialCommand;
-import frc.robot.commands.DriveToLeftBranch;
-import frc.robot.commands.DriveToRightBranch;
 import frc.robot.commands.IntakeCoralCommand;
 import frc.robot.commands.LaunchCoralCommand;
 import frc.robot.commands.MoveElevatorCommand;
@@ -121,8 +119,6 @@ public class RobotContainer {
 
     NamedCommands.registerCommand(
         "MoveLauncherToL4", new MoveLauncherToLaunchL4Position(m_launchAngle, m_elevator));
-
-    NamedCommands.registerCommand("DriveToRightBranch", new DriveToRightBranch(m_drivetrain));
 
     NamedCommands.registerCommand("ScoreCoral", new LaunchCoralCommand(m_launcher));
   }
@@ -251,12 +247,10 @@ public class RobotContainer {
                 m_launchAngle, m_elevator, RobotMap.ElevatorConstants.L3_SCORE_HEIGHT));
     m_copilotController
         .getElevatorL4()
-        .whileTrue(
-            new MoveLauncherToLaunchL4Position(
-                m_launchAngle, m_elevator));
+        .whileTrue(new MoveLauncherToLaunchL4Position(m_launchAngle, m_elevator));
 
-    //m_copilotController.getLeftReef().whileTrue(new DriveToLeftBranch(m_drivetrain));
-    //m_copilotController.getRightReef().whileTrue(new DriveToRightBranch(m_drivetrain));
+    // m_copilotController.getLeftReef().whileTrue(new DriveToLeftBranch(m_drivetrain));
+    // m_copilotController.getRightReef().whileTrue(new DriveToRightBranch(m_drivetrain));
 
     m_copilotController
         .getManualElevatorDown()
