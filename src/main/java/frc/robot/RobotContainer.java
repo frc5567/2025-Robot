@@ -121,6 +121,7 @@ public class RobotContainer {
         "MoveLauncherToL4", new MoveLauncherToLaunchL4Position(m_launchAngle, m_elevator));
 
     NamedCommands.registerCommand("ScoreCoral", new LaunchCoralCommand(m_launcher));
+    NamedCommands.registerCommand("IntakeCoral", new IntakeCoralCommand(m_launcher));
   }
 
   public void setAllianceColor(Alliance color) {

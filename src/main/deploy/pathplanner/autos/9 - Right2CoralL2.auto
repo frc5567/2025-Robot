@@ -11,7 +11,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "DriveToReefd"
+                  "pathName": "RightL2"
                 }
               },
               {
@@ -30,13 +30,13 @@
           }
         },
         {
-          "type": "sequential",
+          "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "LeaveReefd"
+                  "pathName": "RightL2CoralStation"
                 }
               },
               {
@@ -46,6 +46,37 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeCoral"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CoralStationToRightL2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "MoveLauncherToL2"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreCoral"
           }
         }
       ]
