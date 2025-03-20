@@ -151,7 +151,7 @@ public class RobotMap {
     // 3/4 of a rotation per second max angular velocity
     public static final double MAX_ANGULAR_RATE = RotationsPerSecond.of(0.75).in(RadiansPerSecond);
 
-    public static final double DRIVE_SCALAR = 0.7;
+    public static final double DRIVE_SCALAR = 0.5;
   }
 
   /**
