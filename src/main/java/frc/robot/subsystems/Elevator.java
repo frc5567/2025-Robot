@@ -129,7 +129,7 @@ public class Elevator implements Subsystem {
   public void moveElevator(double power) {
     DutyCycleOut mypower = new DutyCycleOut(0.0);
     if (power < 0) {
-      if (m_limitSwitch.get()) {
+      if (!m_limitSwitch.get()) {
         // don't manually overdrive down when already at the limit
         return;
       }
