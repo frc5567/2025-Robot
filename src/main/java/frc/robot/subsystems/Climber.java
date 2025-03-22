@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.controls.DutyCycleOut;
-import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.units.measure.Angle;
@@ -55,7 +54,6 @@ public class Climber implements Subsystem {
     DutyCycleOut mypower = new DutyCycleOut(0.0);
     m_climberMotor.setControl(mypower.withOutput(power));
   }
-  
 
   /**
    * @see frc.robot.subsystems.Climber

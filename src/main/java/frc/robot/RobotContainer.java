@@ -119,7 +119,12 @@ public class RobotContainer {
   private void registerNamedCommands() {
 
     NamedCommands.registerCommand(
-        "MoveLauncherIntake", new MoveLauncherToIntakePosition(m_launchAngle, m_elevator, RobotMap.ElevatorConstants.INTAKE_CORAL_HEIGHT, RobotMap.AngleMotorConstants.INTAKE_ANGLE_AT_CORAL));
+        "MoveLauncherIntake",
+        new MoveLauncherToIntakePosition(
+            m_launchAngle,
+            m_elevator,
+            RobotMap.ElevatorConstants.INTAKE_CORAL_HEIGHT,
+            RobotMap.AngleMotorConstants.INTAKE_ANGLE_AT_CORAL));
 
     NamedCommands.registerCommand(
         "MoveLauncherToL1",
@@ -248,7 +253,12 @@ public class RobotContainer {
 
     m_copilotController
         .getElevatorIntake()
-        .whileTrue(new MoveLauncherToIntakePosition(m_launchAngle, m_elevator, RobotMap.ElevatorConstants.INTAKE_CORAL_HEIGHT, RobotMap.AngleMotorConstants.INTAKE_ANGLE_AT_CORAL));
+        .whileTrue(
+            new MoveLauncherToIntakePosition(
+                m_launchAngle,
+                m_elevator,
+                RobotMap.ElevatorConstants.INTAKE_CORAL_HEIGHT,
+                RobotMap.AngleMotorConstants.INTAKE_ANGLE_AT_CORAL));
 
     m_copilotController
         .getElevatorL1()
@@ -269,7 +279,14 @@ public class RobotContainer {
         .getElevatorL4()
         .whileTrue(new MoveLauncherToLaunchL4Position(m_launchAngle, m_elevator));
 
-    m_copilotController.getFlushIntakeHeight().whileTrue(new MoveLauncherToIntakePosition(m_launchAngle, m_elevator, RobotMap.ElevatorConstants.INTAKE_FLUSH_HEIGHT, RobotMap.AngleMotorConstants.ANGLE_AT_INTAKE_FLUSH));
+    m_copilotController
+        .getFlushIntakeHeight()
+        .whileTrue(
+            new MoveLauncherToIntakePosition(
+                m_launchAngle,
+                m_elevator,
+                RobotMap.ElevatorConstants.INTAKE_FLUSH_HEIGHT,
+                RobotMap.AngleMotorConstants.ANGLE_AT_INTAKE_FLUSH));
     // m_copilotController.getRightReef().whileTrue(new DriveToRightBranch(m_drivetrain));
 
     m_copilotController
