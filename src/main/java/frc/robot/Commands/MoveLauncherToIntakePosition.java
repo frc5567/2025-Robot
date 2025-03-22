@@ -12,7 +12,8 @@ public class MoveLauncherToIntakePosition extends Command {
   private final double m_height;
   private final double m_angle;
 
-  public MoveLauncherToIntakePosition(LaunchAngle launchAngle, Elevator elevator, double height, double angle) {
+  public MoveLauncherToIntakePosition(
+      LaunchAngle launchAngle, Elevator elevator, double height, double angle) {
     m_launchAngle = launchAngle;
     m_elevator = elevator;
     m_height = height;

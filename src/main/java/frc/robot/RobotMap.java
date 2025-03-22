@@ -98,8 +98,6 @@ public class RobotMap {
 
     // TODO: Tune this to be reasonable for the drive team.
     public static final double MANUAL_ANGLE_POWER = 0.10;
-
-    
   }
 
   public static final class ClimberConstants {
