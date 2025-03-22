@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -16,7 +17,7 @@ public class Climber implements Subsystem {
 
   private TalonFX m_climberMotor;
 
-  private PositionVoltage m_positionVoltage = new PositionVoltage(0).withSlot(0);
+  private double m_power = 0.0;
 
   /**
    * The constructor of the climber class.
@@ -49,11 +50,12 @@ public class Climber implements Subsystem {
    *
    * @param position The target position in terms of rotations.
    */
-  public void setClimberPosition(double position) {
+  public void setClimberPower(double power) {
 
-    m_climberMotor.setControl(m_positionVoltage.withPosition(position));
-    // double curPos = getClimberPosition();
+    DutyCycleOut mypower = new DutyCycleOut(0.0);
+    m_climberMotor.setControl(mypower.withOutput(power));
   }
+  
 
   /**
    * @see frc.robot.subsystems.Climber

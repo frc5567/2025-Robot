@@ -39,7 +39,7 @@ public class ClimbCommand extends Command {
    */
   @Override
   public void execute() {
-    m_climberSubsystem.setClimberPosition(RobotMap.ClimberConstants.CLIMBER_TRAVEL_DISTANCE);
+    m_climberSubsystem.setClimberPower(RobotMap.ClimberConstants.CLIMBER_POWER);
   }
 
   /**
