@@ -28,7 +28,9 @@ public class RobotMap {
     public static final double STARTING_HEIGHT = 0.0;
 
     // TODO: Figure out the correct height in mm needed for intake.
-    public static final double INTAKE_HEIGHT = 100.0;
+    public static final double INTAKE_FLUSH_HEIGHT = 130.0;
+
+    public static final double INTAKE_CORAL_HEIGHT = 95.0;
 
     // TODO: Figure out correct height in mm needed for level 1.
     public static final double L1_SCORE_HEIGHT = 50.0;
@@ -40,7 +42,7 @@ public class RobotMap {
     public static final double L3_SCORE_HEIGHT = 550.0;
 
     // TODO: Figure out correct height in mm needed for level 4 or if we are even going for level 4.
-    public static final double L4_SCORE_HEIGHT = 1250.0;
+    public static final double L4_SCORE_HEIGHT = 1270.0;
 
     // Found offset using pheonix tuner subtracting, in mm.
     public static final double OFFSET = 0.438477;
@@ -83,17 +85,21 @@ public class RobotMap {
     // TODO: find correct value of tolerance in degrees.
     public static final double ANGLE_TOLERANCE = 0.25;
 
-    public static final double ANGLE_AT_LAUNCH = 14.0;
+    public static final double ANGLE_AT_LAUNCH = 13.0;
 
-    public static final double ANGLE_AT_L4_LAUNCH = 17.5;
+    public static final double ANGLE_AT_L4_LAUNCH = 17.25;
 
-    public static final double ANGLE_AT_INTAKE = 7.5;
+    public static final double ANGLE_AT_INTAKE_FLUSH = 7.2;
+
+    public static final double INTAKE_ANGLE_AT_CORAL = 7.8;
 
     // offset found by mesuring through pheonix tuner in rotations.
     public static final double OFFSET = -0.045410;
 
     // TODO: Tune this to be reasonable for the drive team.
     public static final double MANUAL_ANGLE_POWER = 0.10;
+
+    
   }
 
   public static final class ClimberConstants {
@@ -106,6 +112,8 @@ public class RobotMap {
 
     /** 40:1 gear ratio and 2.25 rotations of the output shaft for complete travel. */
     public static final double CLIMBER_TRAVEL_DISTANCE = 300;
+
+    public static double CLIMBER_POWER = 0.5;
 
     // Offset found by measuring through pheonix tuner in rotations.
     public static final double OFFSET = -5.281250;

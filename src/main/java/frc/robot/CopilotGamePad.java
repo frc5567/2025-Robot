@@ -29,12 +29,12 @@ public class CopilotGamePad extends CommandGenericHID {
   public enum GamePadControls {
     Climber_Assist_Extend(1),
     Climber_Climb(2),
-    Elevator_Intake(3),
+    FlushHeight(3),
     Elevator_L1(4),
     Elevator_L2(5),
     Elevator_L3(6),
     Elevator_L4(7),
-    Left_Reef(8),
+    Elevator_Intake(8),
     Manual_Elevator_Down(9),
     Manual_Elevator_Up(10),
     Right_Reef(11),
@@ -132,9 +132,9 @@ public class CopilotGamePad extends CommandGenericHID {
    *
    * @return true if the Left Reef button was pressed, false if not.
    */
-  public Trigger getLeftReef() {
-    Trigger theButton = button(GamePadControls.Left_Reef.portNum);
-    System.out.println("Left Reef Button: [" + GamePadControls.Left_Reef.portNum + "]");
+  public Trigger getFlushIntakeHeight() {
+    Trigger theButton = button(GamePadControls.FlushHeight.portNum);
+    System.out.println("Flush Height Button: [" + GamePadControls.FlushHeight.portNum + "]");
     return theButton;
   }
 
