@@ -78,6 +78,31 @@
           "data": {
             "name": "ScoreCoral"
           }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "RightL2CoralStation2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "MoveLauncherIntake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeCoral"
+          }
         }
       ]
     }
